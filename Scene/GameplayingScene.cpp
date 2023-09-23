@@ -133,7 +133,7 @@ void GameplayingScene::NormalUpdat(const InputState& input)
 	CreateItem();
 	m_itemFactory->Update();
 
-	//プレイヤーとエネミーの当たり判定
+	//プレイヤーとの当たり判定
 	CollisionPlayer();
 
 	if (m_map->GetEventParam(m_player->GetPos().x, m_player->GetPos().y) == static_cast<int>(EventChipType::crea))

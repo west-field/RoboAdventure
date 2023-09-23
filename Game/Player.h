@@ -12,18 +12,18 @@ class Hp;
 /// </summary>
 enum class PlayerAnimation
 {
-	Dance = 0,
-	Death = 1,
-	Idle = 2,
-	Jump = 3,
-	No = 4,
-	Punch = 5,
-	Run = 6,
-	ThumbsUp = 9,
-	Walk = 10,
-	WalkJump = 11,
-	Wave = 12,
-	Yes = 13,
+	Dance = 0,		//ダンス
+	Death = 1,		//崩れる
+	Idle = 2,		//立ち止まり
+	Jump = 3,		//その場ジャンプ
+	No = 4,			//首振り
+	Punch = 5,		//パンチ
+	Run = 6,		//走る
+	ThumbsUp = 9,	//
+	Walk = 10,		//歩く
+	WalkJump = 11,	//歩きながらジャンプ
+	Wave = 12,		//
+	Yes = 13,		//うなずく
 };
 
 class Player
@@ -37,7 +37,10 @@ public:
 
 	void Draw();
 
-	//位置を取得
+	/// <summary>
+	/// 表示位置を取得
+	/// </summary>
+	/// <returns>表示位置</returns>
 	const VECTOR GetPos() const;
 
 	/// <summary>
@@ -46,22 +49,46 @@ public:
 	/// <param name="model">モデル</param>
 	bool HitModel(int model);
 	
-	//ダメージを受けた
+	/// <summary>
+	/// ダメージを受けた
+	/// </summary>
+	/// <param name="attack">ダメージ量</param>
 	void OnDamage(int attack);
 	//ダメージを受けているか
+	
+	/// <summary>
+	/// すでにダメージを受けているか
+	/// </summary>
+	/// <returns>true:ダメージを受けている false:ダメージを受けていない</returns>
 	bool IsDamage() { return m_isDamage; }
-	//現在のHpを取得
+
+	/// <summary>
+	/// 現在のHPを取得
+	/// </summary>
+	/// <returns>現在のHP</returns>
 	const int GetHp()const;
 
-	//アタック
+	/// <summary>
+	/// 攻撃する
+	/// </summary>
 	void Attack();
-	//攻撃できるか
+
+	/// <summary>
+	/// 攻撃ができるかどうかを取得する
+	/// </summary>
+	/// <returns>true:攻撃できる false:攻撃できない</returns>
 	bool IsAttack();
 
-	//ジャンプしているかどうか
+	/// <summary>
+	/// ジャンプしているかどうかを取得する
+	/// </summary>
+	/// <returns>true:ジャンプしている false:ジャンプしていない</returns>
 	bool IsJump();
 
-	//モデルを取得
+	/// <summary>
+	/// モデルを取得する
+	/// </summary>
+	/// <returns>モデル</returns>
 	const std::shared_ptr<Model> GetModel() const;
 
 	/// <summary>
@@ -81,17 +108,26 @@ public:
 private:
 	void (Player::* m_update)(const InputState& input);//Update用メンバ関数ポインタ
 
-	//通常アップデート
+	/// <summary>
+	/// 通常アップデート
+	/// </summary>
+	/// <param name="input">キー入力</param>
 	void NormalUpdate(const InputState& input);
-	//ジャンプする
+	
+	/// <summary>
+	/// ジャンプアップデート
+	/// </summary>
+	/// <param name="input">キー入力</param>
 	void JumpUpdate(const InputState& input);
 
-	//プレイヤー移動
+	/// <summary>
+	/// 移動判定
+	/// </summary>
 	void Move();
 
 	VECTOR m_pos;//表示位置
 	VECTOR m_vel;//移動量
-	VECTOR m_dir;//移動方向、回転方向
+	VECTOR m_dir;//移動方向
 	VECTOR m_rot;//表示方向
 
 	std::shared_ptr<Model> m_model;//モデル
