@@ -1,0 +1,28 @@
+VECTOR Player::GetLeftBottom()
+{
+	return VECTOR(VAdd(m_coll.GetCenter(), VGet(-0.3f, 0.0f, 0.0f)));
+}
+
+VECTOR Player::GetLeftTop()
+{
+	return VECTOR(VAdd(m_coll.GetCenter(), VGet(-0.3f, 1.0f, 0.0f)));
+}
+
+VECTOR Player::GetRightBottom()
+{
+	return VECTOR(VAdd(m_coll.GetCenter(), VGet(0.3f, 0.0f, 0.0f)));
+}
+
+VECTOR Player::GetRightTop()
+{
+	return VECTOR(VAdd(m_coll.GetCenter(), VGet(0.3f, 1.0f, 0.0f)));
+}
+
+/*
+図形三角関数ベクトル行列
+論理演算メモリネットワーク
+*/
+
+3Dの横スクロールアクション
+
+キノピオ隊長のような箱庭
