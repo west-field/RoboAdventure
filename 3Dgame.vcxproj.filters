@@ -129,6 +129,9 @@
     <ClCompile Include="Game\Player.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\DebugScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\GameclearScene.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="Game\Player.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\DebugScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

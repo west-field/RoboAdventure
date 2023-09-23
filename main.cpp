@@ -6,6 +6,7 @@
 #include "InputState.h"
 #include "Scene/SceneManager.h"
 #include "Scene/TitleScene.h"
+#include "Scene/DebugScene.h"
 
 //int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
@@ -44,8 +45,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	auto& soundManager = SoundManager::GetInstance();
 	InputState input;
 	SceneManager sceneManeger;
+#if _DEBUG
+	sceneManeger.ChangeScene(new DebugScene(sceneManeger));
+#else
 	sceneManeger.ChangeScene(new TitleScene(sceneManeger, true));
-
+#endif
 	sceneManeger.SetIsWindouMode(Game::kWindowMode);
 
 	//‰œs0.1`1000‚Ü‚Å‚ğƒJƒƒ‰‚Ì•`‰æ”ÍˆÍ‚Æ‚·‚é
