@@ -30,8 +30,6 @@ namespace
 	constexpr float kSizeY = 0.9f;//プレイヤーのサイズY
 
 	constexpr int kMaxHp = 3;//最大HP
-
-	constexpr float kMinFloorY = -0.388;
 }
 
 Player::Player(std::shared_ptr<Map> map) : m_update(&Player::NormalUpdate)
@@ -138,7 +136,7 @@ void Player::Draw()
 	DrawCapsule3D(VAdd(m_pos, VGet(0.0f, kHitCapsuleBottom, 0.0f)), VAdd(m_pos, VGet(0.0f, kHitCapsuleTop, 0.0f)),
 		kCapsuleRadius, 10, 0xffffff, 0xffffff, false);//カプセル
 
-	DrawLine3D(VAdd(m_pos, VGet(0.0f, kHitLineTop, 0.0f)), VAdd(m_pos, VGet(0.0f, kHitLineBottom - 0.2f, 0.0f)), 0xff0000);//線
+	DrawLine3D(VAdd(m_pos, VGet(0.0f, (kHitCapsuleTop + 0.5f), 0.0f)), VAdd(m_pos, VGet(0.0f, kHitLineBottom - 0.2f, 0.0f)), 0xff0000);//線
 
 	//今再生しているアニメーションを文字で表示
 	switch (m_animType)
@@ -577,7 +575,7 @@ void Player::Move()
 				for (int i = 0; i < floorCollisionNum; i++)
 				{
 					// 足先から頭の高さまでの間でポリゴンと接触しているかどうかを判定
-					LineRes = HitCheck_Line_Triangle(VAdd(nowPos, VGet(0.0f, kHitLineTop, 0.0f)), VAdd(nowPos, VGet(0.0f, kHitLineBottom+1.0f, 0.0f)),
+					LineRes = HitCheck_Line_Triangle(VAdd(nowPos, VGet(0.0f, kHitLineTop + 0.5f, 0.0f)), VAdd(nowPos, VGet(0.0f, kHitLineBottom+1.0f, 0.0f)),
 						floorCol[i]->Position[0], floorCol[i]->Position[1], floorCol[i]->Position[2]);
 
 					// 接触していなかったら何もしない
@@ -597,7 +595,7 @@ void Player::Move()
 				if (isHitFlag)
 				{
 					// 接触した場合はプレイヤーのＹ座標を接触座標を元に更新
-					nowPos.y = MinY - kHitCapsuleTop;
+					nowPos.y = MinY - (kHitCapsuleTop + 0.5f);
 
 					// Ｙ軸方向の速度は反転
 					m_jumpPower = -m_jumpPower;
