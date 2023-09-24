@@ -92,13 +92,11 @@ void GameplayingScene::Draw()
 	{
 		if (getCoin[i])
 		{
-			//DrawGraph(i * 60, 50, m_starHandle, true);
 			DrawExtendGraph(kStarGraphStartX + i * kStarGraphSize, kStarGraphStartY,
 				kStarGraphStartX + i * kStarGraphSize + kStarGraphSize, kStarGraphStartY + kStarGraphSize, m_starHandle, true);
 		}
 		else
 		{
-			//DrawGraph(i * 60, 50, m_starOutlineHandle, true);
 			DrawExtendGraph(kStarGraphStartX + i * kStarGraphSize, kStarGraphStartY,
 				kStarGraphStartX + i * kStarGraphSize + kStarGraphSize, kStarGraphStartY + kStarGraphSize, m_starOutlineHandle, true);
 		}
