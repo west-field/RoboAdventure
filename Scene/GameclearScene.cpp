@@ -47,7 +47,7 @@ GameclearScene::GameclearScene(SceneManager& manager,const int selectStage, cons
 	m_file = std::make_shared<FileInformation>();
 	m_file->Load();//各ステージの情報取得
 
-	m_map = std::make_shared<Map>(kFileName,0.0f,1);//ゲームクリアで使用するマップ
+	m_map = std::make_shared<Map>(kFileName,0.0f,0);//ゲームクリアで使用するマップ
 
 	m_model->SetAnimation(13, true, true);//モデルのアニメーションを変更
 	m_model->SetPos(VGet(14.0f,-0.4f,0.0f));//モデルの位置を変更

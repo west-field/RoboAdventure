@@ -27,16 +27,35 @@ Map::Map(const wchar_t* const fileName, float bgAdd, int selectStage) :m_mapHeig
 	Load(fileName);
 	//ファイルをロードする
 	LoadModel(bgAdd);//モデルのロード
+
 	//背景
-	m_bg[0].handle = my::MyLoadGraph(L"Data/Img/bg/bg2.png");
-	m_bg[0].scrollSpeed = 0.5f;
-	GetGraphSizeF(m_bg[0].handle, &m_bgHandleW, &m_bgHandleH);
-	m_bg[1].handle = my::MyLoadGraph(L"Data/Img/bg/bg2.png");
-	m_bg[1].scrollSpeed = 0.5f;
-	m_bg[2].handle = my::MyLoadGraph(L"Data/Img/bg/bg1.png");
-	m_bg[2].scrollSpeed = 1.0f;
-	m_bg[3].handle = my::MyLoadGraph(L"Data/Img/bg/bg1.png");
-	m_bg[3].scrollSpeed = 1.0f;
+	switch (selectStage)
+	{
+	case 0:
+	case 2:
+	default:
+		m_bg[0].handle = my::MyLoadGraph(L"Data/Img/bg/bg2.png");
+		m_bg[0].scrollSpeed = 0.5f;
+		GetGraphSizeF(m_bg[0].handle, &m_bgHandleW, &m_bgHandleH);
+		m_bg[1].handle = my::MyLoadGraph(L"Data/Img/bg/bg2.png");
+		m_bg[1].scrollSpeed = 0.5f;
+		m_bg[2].handle = my::MyLoadGraph(L"Data/Img/bg/bg1.png");
+		m_bg[2].scrollSpeed = 1.0f;
+		m_bg[3].handle = my::MyLoadGraph(L"Data/Img/bg/bg1.png");
+		m_bg[3].scrollSpeed = 1.0f;
+		break;
+	case 1:
+		m_bg[0].handle = my::MyLoadGraph(L"Data/Img/bg/bgWallback.png");
+		m_bg[0].scrollSpeed = 0.5f;
+		GetGraphSizeF(m_bg[0].handle, &m_bgHandleW, &m_bgHandleH);
+		m_bg[1].handle = my::MyLoadGraph(L"Data/Img/bg/bgWallback.png");
+		m_bg[1].scrollSpeed = 0.5f;
+		m_bg[2].handle = my::MyLoadGraph(L"Data/Img/bg/bgWall.png");
+		m_bg[2].scrollSpeed = 1.0f;
+		m_bg[3].handle = my::MyLoadGraph(L"Data/Img/bg/bgWall.png");
+		m_bg[3].scrollSpeed = 1.0f;
+		break;
+	}
 
 	for (int i = 0; i < 4; i++)
 	{

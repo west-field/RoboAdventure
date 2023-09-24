@@ -33,7 +33,7 @@ GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const
 
 	m_camera->CameraPosInit();//カメラの位置を初期化
 	
-	m_map = std::make_shared<Map>(kFileName, 0.0f, 1);//ゲームオーバーで使用するマップ
+	m_map = std::make_shared<Map>(kFileName, 0.0f, 0);//ゲームオーバーで使用するマップ
 
 	//モデル更新
 	m_model->SetAnimation(4, true, true);
