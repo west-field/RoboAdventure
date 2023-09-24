@@ -3,6 +3,8 @@
 #include "TitleScene.h"
 #include "GameplayingScene.h"
 
+#include "../game.h"
+
 #include <DxLib.h>
 
 #include "../Camera.h"
@@ -48,6 +50,10 @@ void DebugScene::Draw()
 	DrawString(kStartX, kStartY, L"タイトルへ", m_color[0]);
 	DrawString(kStartX, kStartY + kFontSize, L"ゲームシーンへ", m_color[1]);
 	DrawFormatString(kStartX + 10, kStartY + kFontSize * 2, m_color[2], L"ステージ選択%d", m_stage + 1);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_fadeValue);
+	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_fadeColor, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void DebugScene::FadeInUpdat(const InputState& input)
@@ -132,10 +138,10 @@ void DebugScene::NormalUpdat(const InputState& input)
 
 	if (input.IsTriggered(InputType::next))
 	{
+		m_color[m_select] = 0xf00f00;
 		if (m_select == static_cast<int>(SelectScene::SelectStage))
 		{
 			m_updateFunc = &DebugScene::StageSelect;
-			m_color[static_cast<int>(SelectScene::SelectStage)] = 0xf00f00;
 			return;
 		}
 		else
