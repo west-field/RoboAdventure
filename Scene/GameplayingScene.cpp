@@ -25,6 +25,10 @@ namespace
 {
 	constexpr int kTitleFontSize = 80;//文字のサイズ
 	constexpr int kFontSize = 50;//文字のサイズ
+
+	constexpr int kStarGraphSize = 60;
+	constexpr int kStarGraphStartX = 50;
+	constexpr int kStarGraphStartY = 130;
 }
 
 GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const fileName, const int select, std::shared_ptr<Camera> camera) :
@@ -48,6 +52,9 @@ GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const f
 	m_BgmH = LoadSoundMem(L"Data/Sound/BGM/playSound.mp3");
 	ChangeVolumeSoundMem(0, m_BgmH);
 	PlaySoundMem(m_BgmH, DX_PLAYTYPE_LOOP, true);
+
+	m_starHandle = LoadGraph(L"Data/Img/star.png");
+	m_starOutlineHandle = LoadGraph(L"Data/Img/star_outline.png");
 }
 
 GameplayingScene::~GameplayingScene()
@@ -57,6 +64,9 @@ GameplayingScene::~GameplayingScene()
 	m_itemFactory.reset();
 
 	DeleteSoundMem(m_BgmH);
+
+	DeleteGraph(m_starHandle);
+	DeleteGraph(m_starOutlineHandle);
 	
 }
 
@@ -69,11 +79,31 @@ void GameplayingScene::Update(const InputState& input)
 
 void GameplayingScene::Draw()
 {
-	m_map->Draw();
-	m_player->Draw();
+	m_map->Draw();//マップを表示
+	m_player->Draw();//プレイヤー表示
 	SetFontSize(50);
-	DrawFormatString(Game::kScreenWidth - 500, 0, 0x000000, L"%d", m_score);
+	DrawFormatString(Game::kScreenWidth - 500, 0, 0x000000, L"%d", m_score);//スコア表示
 	SetFontSize(0);
+
+	//スターを表示
+	bool getCoin[3] = {false};
+	m_itemFactory->IsGetCoin(getCoin);
+	for (int i = 0; i < 3; i++)
+	{
+		if (getCoin[i])
+		{
+			//DrawGraph(i * 60, 50, m_starHandle, true);
+			DrawExtendGraph(kStarGraphStartX + i * kStarGraphSize, kStarGraphStartY,
+				kStarGraphStartX + i * kStarGraphSize + kStarGraphSize, kStarGraphStartY + kStarGraphSize, m_starHandle, true);
+		}
+		else
+		{
+			//DrawGraph(i * 60, 50, m_starOutlineHandle, true);
+			DrawExtendGraph(kStarGraphStartX + i * kStarGraphSize, kStarGraphStartY,
+				kStarGraphStartX + i * kStarGraphSize + kStarGraphSize, kStarGraphStartY + kStarGraphSize, m_starOutlineHandle, true);
+		}
+	}
+
 	(this->*m_drawFunc)();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_fadeValue);
@@ -258,8 +288,8 @@ void GameplayingScene::GameclearUpdate(const InputState& input)
 
 void GameplayingScene::NormalDraw()
 {
-	m_enemyFactory->Draw();
-	m_itemFactory->Draw();
+	m_enemyFactory->Draw();//敵を表示
+	m_itemFactory->Draw();//アイテムを表示
 }
 
 //TODO:何も表示しないか、すこし赤くするか

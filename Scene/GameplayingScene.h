@@ -53,24 +53,25 @@ private:
     void (GameplayingScene::* m_updateFunc)(const InputState& input);
     void (GameplayingScene::* m_drawFunc)();
 
-    std::shared_ptr<Player> m_player;
-    std::shared_ptr<EnemyFactory> m_enemyFactory;
-    std::shared_ptr<ItemFactory> m_itemFactory;
-    std::shared_ptr<Map> m_map;
-    std::shared_ptr<Camera> m_camera;
-    std::shared_ptr<FileInformation> m_file;
+    std::shared_ptr<Player> m_player;//プレイヤー
+    std::shared_ptr<EnemyFactory> m_enemyFactory;//敵工場
+    std::shared_ptr<ItemFactory> m_itemFactory;//アイテム工場
+    std::shared_ptr<Map> m_map;//マップ
+    std::shared_ptr<Camera> m_camera;//カメラ
+    std::shared_ptr<FileInformation> m_file;//ファイル
     
     int m_soundVolume = 0;//サウンドの音量
     
     int m_crea = 0;//どこに移動するか
-    
-    bool m_isHit = false;//マップと当たったかどうか
 
-    int m_selectStage;
+    int m_selectStage;//選択したステージ
 
-    int m_fade;
-    int m_fadetimer;
+    int m_fade;//フェード
+    int m_fadetimer;//フェードの時間
 
-    int m_score;
+    int m_score;//スコア
+
+    int m_starHandle;//スターを表示する
+    int m_starOutlineHandle;//スター枠を表示する
 };
 
