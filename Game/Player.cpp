@@ -128,7 +128,7 @@ void Player::Draw()
 	if (m_flashing % 10 != 0)	return;
 	//モデル表示
 	m_model->Draw();
-#if true
+#if _DEBUG
 	DrawFormatString(0, 20, 0xffffff, L"pos.x%lf,y%lf,z%lf", m_pos.x, m_pos.y, m_pos.z);//モデル表示位置
 	DrawFormatString(0, 40, 0xffffff, L"jump%lf", m_jumpPower);//ジャンプの高さを変更
 
@@ -258,12 +258,12 @@ void Player::SwitchAnimation(PlayerAnimation animNo, bool isLoop, bool isForceCh
 
 bool Player::OnCamera()
 {
-	////二つの座標であらわされるボックスがカメラの視界に入っていないかどうかを判定する
-	//if (CheckCameraViewClip_Box(m_line[static_cast<int>(Direction::Top)].lineFirst,
-	//	m_line[static_cast<int>(Direction::Bottom)].lineSecond))//true:視界に入っていない false:視界に入っている
-	//{
-	//	return false;
-	//}
+	//二つの座標であらわされるボックスがカメラの視界に入っていないかどうかを判定する
+	if (CheckCameraViewClip_Box(VAdd(m_pos, VGet(kSizeX, kSizeY, 0.0f)),
+		VAdd(m_pos, VGet(-kSizeX, 0.0f, 0.0f))))//true:視界に入っていない false:視界に入っている
+	{
+		return false;
+	}
 	return true;
 }
 
