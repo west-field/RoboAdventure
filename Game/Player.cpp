@@ -17,7 +17,8 @@ namespace
 
 	constexpr int kMaxHitColl = 1000;// 処理するコリジョンポリゴンの最大数
 
-	constexpr float kCapsuleRadius = 0.3f;		//カプセルの半径
+	constexpr float kCapsuleRadius = 0.25f;		//カプセルの半径
+
 	constexpr float kHitCapsuleTop = 0.6f;		//カプセルの上の位置
 	constexpr float kHitCapsuleBottom = 0.3f;	//カプセルの下の位置
 
@@ -347,7 +348,7 @@ void Player::NormalUpdate(const InputState& input)
 
 void Player::JumpUpdate(const InputState& input)
 {
-	m_vel = VScale(VGet(m_dir.x, 0.0f, 0.0f), kMoveSpeed / 1.5);
+	m_vel = VScale(VGet(m_dir.x, 0.0f, 0.0f), kMoveSpeed / 1.5f);
 	m_dir.y = -1.0f;
 	m_vel.y += m_dir.y * kGravity;
 
@@ -472,21 +473,10 @@ void Player::Move()
 					// ここにきたらポリゴンとプレイヤーが当たっているということなので、ポリゴンに当たったフラグを立てる
 					isHitFlag = true;
 
-					// 壁に当たったら壁に遮られない移動成分分だけ移動する
-					{
-						VECTOR SlideVec;	// プレイヤーをスライドさせるベクトル
+					// 当たっていたら規定距離分プレイヤーを壁の法線方向に移動させる
+					nowPos = VAdd(nowPos, VScale(VGet(wallCol[i]->Normal.x, 0.0f, 0.0f), kSlideMoveSpeed));
+					nowPos.z = 0.0f;
 
-						// 進行方向ベクトルと壁ポリゴンの法線ベクトルに垂直なベクトルを算出
-						SlideVec = VCross(m_vel, wallCol[i]->Normal);
-
-						// 算出したベクトルと壁ポリゴンの法線ベクトルに垂直なベクトルを算出、これが
-						// 元の移動成分から壁方向の移動成分を抜いたベクトル
-						SlideVec = VCross(wallCol[i]->Normal, SlideVec);
-
-						// それを移動前の座標に足したものを新たな座標とする
-						nowPos = VAdd(oldPos, SlideVec);
-						nowPos.z = 0.0f;
-					}
 					int j = 0;
 					// 新たな移動座標で壁ポリゴンと当たっていないかどうかを判定する
 					for (j = 0; j < wallCollisionNum; j++)
@@ -642,10 +632,10 @@ void Player::Move()
 					// 接触したＹ座標を保存する
 					MaxY = LineRes.Position.y;
 
-					/*if (MaxY < kMinFloorY)
+					if (MaxY < -0.38f)
 					{
-						MaxY = kMinFloorY;
-					}*/
+						MaxY = -0.38f;
+					}
 				}
 
 				// 床ポリゴンに当たったかどうかで処理を分岐
