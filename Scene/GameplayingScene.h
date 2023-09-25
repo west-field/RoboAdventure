@@ -7,7 +7,6 @@ class EnemyFactory;
 class ItemFactory;
 class Map;
 class Camera;
-class FileInformation;
 
 /// <summary>
 /// ゲーム中シーン
@@ -21,31 +20,59 @@ public:
     virtual void Update(const InputState& input);
     virtual void Draw();
 private:
-     //画面のフェードイン
+     /// <summary>
+     /// 画面のフェードイン
+     /// </summary>
+     /// <param name="input">入力</param>
      void FadeInUpdat(const InputState& input);
-     //画面のフェードアウト
+     /// <summary>
+     /// 画面のフェードアウト
+     /// </summary>
      void FadeOutUpdat(const InputState& input);
 
-     //通常更新
+     /// <summary>
+     /// 通常更新
+     /// </summary>
      void NormalUpdat(const InputState& input);
-     //カメラをプレイヤーに近づける
+     /// <summary>
+     /// カメラをプレイヤーに近づける
+     /// </summary>
      void MoveCameraCloser(const InputState& input);
-     //ゲームオーバーシーンに行く前のアクション
+     /// <summary>
+     /// ゲームオーバーシーンに行く前のアクション
+     /// </summary>
      void GameoverUpdate(const InputState& input);
-     //ゲームクリアシーンに行く前のアクション
+     /// <summary>
+     /// ゲームクリアシーンに行く前のアクション
+     /// </summary>
      void GameclearUpdate(const InputState& input);
 
+     /// <summary>
+     /// 通常表示
+     /// </summary>
      void NormalDraw();
+     /// <summary>
+     /// ゲームオーバー表示
+     /// </summary>
      void GameoverDraw();
+     /// <summary>
+     /// ゲームクリア表示
+     /// </summary>
      void GameclearDraw();
 
-     //プレイヤーとの当たり判定
+     /// <summary>
+     /// プレイヤーとの当たり判定
+     /// </summary>
      void CollisionPlayer();
 
-     //敵を生成する
+     /// <summary>
+     /// 敵を生成する
+     /// </summary>
      void CreateEnemy();
 
-     //アイテムを生成
+     /// <summary>
+     /// アイテムを生成
+     /// </summary>
      void CreateItem();
 private:
     unsigned int m_fadeColor = 0x000000;//フェードの色（黒
@@ -58,7 +85,6 @@ private:
     std::shared_ptr<ItemFactory> m_itemFactory;//アイテム工場
     std::shared_ptr<Map> m_map;//マップ
     std::shared_ptr<Camera> m_camera;//カメラ
-    std::shared_ptr<FileInformation> m_file;//ファイル
     
     int m_soundVolume = 0;//サウンドの音量
     

@@ -19,16 +19,16 @@
 #include "../Game/Item/ItemBase.h"
 #include "../Game/ItemFactory.h"
 #include "../Game/Map.h"
-#include "../Util/FileInformation.h"
 
 namespace
 {
 	constexpr int kTitleFontSize = 80;//文字のサイズ
 	constexpr int kFontSize = 50;//文字のサイズ
 
-	constexpr int kStarGraphSize = 60;
-	constexpr int kStarGraphStartX = 50;
-	constexpr int kStarGraphStartY = 130;
+	//スター取得画像表示
+	constexpr int kStarGraphSize = 60;//画像の大きさ
+	constexpr int kStarGraphStartX = 50;//表示し始める位置X
+	constexpr int kStarGraphStartY = 130;//表示し始める位置Y
 }
 
 GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const fileName, const int select, std::shared_ptr<Camera> camera) :
@@ -40,9 +40,6 @@ GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const f
 	m_camera->CameraPosInit(m_player->GetPos(),false);
 	m_enemyFactory = std::make_shared<EnemyFactory>(m_map);
 	m_itemFactory = std::make_shared<ItemFactory>();
-	
-	m_file = std::make_shared<FileInformation>();
-	m_file->Load();
 	
 	m_fade = 0;
 	m_fadetimer = 5;
@@ -132,12 +129,10 @@ void GameplayingScene::FadeOutUpdat(const InputState& input)
 		switch (m_crea)
 		{
 		case 0:
-			m_file->Clear(m_selectStage, m_score, getCoin[0], getCoin[1], getCoin[2]);//選択したステージ、スコア、スター獲得状況
-			m_file->Save();
-			m_manager.ChangeScene(new GameclearScene(m_manager, m_selectStage, m_score, m_camera, m_player->GetModel()));
+			m_manager.ChangeScene(new GameclearScene(m_manager, m_selectStage, m_score, m_camera, m_player->GetModel(), getCoin[0], getCoin[1], getCoin[2]));
 			return;
 		case 1:
-			m_manager.ChangeScene(new GameoverScene(m_manager, m_selectStage,m_score, m_camera, m_player->GetModel()));
+			m_manager.ChangeScene(new GameoverScene(m_manager, m_selectStage,m_score, m_camera, m_player->GetModel(), getCoin[0], getCoin[1], getCoin[2]));
 		default:
 			return;
 		}
