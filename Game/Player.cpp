@@ -227,7 +227,14 @@ const int Player::GetHp() const
 void Player::Attack()
 {
 	//ã‚Éã‚ª‚é
-	m_jumpPower += kJumpSpeed / 2;
+	if (m_jumpPower > 0.0f)
+	{
+		m_jumpPower += kJumpSpeed / 1.5f;
+	}
+	else
+	{
+		m_jumpPower = kJumpSpeed / 1.5f;
+	}
 	m_update = &Player::JumpUpdate;
 }
 
