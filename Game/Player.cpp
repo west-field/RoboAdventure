@@ -363,7 +363,7 @@ void Player::JumpUpdate(const InputState& input)
 	if (m_animType == PlayerAnimation::WalkJump && m_jumpPower > 0.0f)
 	{
 		//重力分減少
-		m_jumpPower -= kGravity ;
+		m_jumpPower -= kGravity;
 
 		//移動ベクトルのY成分に代入する
 		m_vel.y += m_jumpPower;

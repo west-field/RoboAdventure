@@ -78,6 +78,38 @@ TitleScene::TitleScene(SceneManager& manager, bool start) :
 	m_file = std::make_shared<FileInformation>();
 #if false
 	m_file->Init();//各ステージ情報を初期化する
+	m_file->Load();//各ステージ情報の取得
+	Header header[static_cast<int>(StageSelect::stageNum)] = {};
+
+	//ステージの数情報を取得
+	for (int i = 0; i < static_cast<int>(StageSelect::stageNum); i++)
+	{
+		header[i] = m_file->GetHeader(i);//丸ごとコピー
+		m_selectStage[i].isSelect = header[i].select;//選択できるかどうかをコピー
+		m_selectStage[i].highScore = header[i].highScore;//ハイスコア
+
+		if (i == 2)
+		{
+			m_selectStage[i].isSelect = false;
+		}
+
+		//選択できるとき
+		if (m_selectStage[i].isSelect)
+		{
+			m_selectStage[i].fade = kFadeMax;//MAX
+		}
+		else
+		{
+			m_selectStage[i].fade = kFadeNoSelectGraph;//すこし薄く
+		}
+
+		//ステージにある星の数
+		for (int j = 0; j < 3; j++)
+		{
+			//すでにとっているかどうか
+			m_selectStage[i].star[j].isGet = header[i].isCoinGet[j];
+		}
+	}
 #else
 	m_file->Load();//各ステージ情報の取得
 	Header header[static_cast<int>(StageSelect::stageNum)] = {};
@@ -134,7 +166,7 @@ TitleScene::TitleScene(SceneManager& manager, bool start) :
 		//スター表示位置を代入
 		for (int j = 0; j < 3; j++)
 		{
-			//ステージ画像位置*拡大率 + スターのサイズ + スターの○番目の位置
+			//ステージ画像位置 * 拡大率 + スターのサイズ + スターの○番目の位置
 			select.star[j].x = posX - static_cast<int>(kStageSelectGraphSize * kGraphScale) + kStarHandleSize + static_cast<int>(kStarHandleSize * j);
 			select.star[j].y = y - static_cast<int>(kStageSelectGraphSize * kGraphScale)+ kStarHandleSize;
 		}
