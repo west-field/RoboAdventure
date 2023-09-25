@@ -114,7 +114,7 @@ TitleScene::TitleScene(SceneManager& manager, bool start) :
 #endif
 	//ステージ選択をするときのステージ画像
 	m_selectStage[StageSelect::First].handle = my::MyLoadGraph(L"Data/Img/stage1.jpg");//1ステージ目
-	m_selectStage[StageSelect::Second].handle = my::MyLoadGraph(L"Data/Img/comingSoon.jpg");//２ステージ目
+	m_selectStage[StageSelect::Second].handle = my::MyLoadGraph(L"Data/Img/stage2.jpg");//２ステージ目
 	m_selectStage[StageSelect::Third].handle = my::MyLoadGraph(L"Data/Img/comingSoon.jpg");//３ステージ目
 
 	//ステージ画像を表示する位置
@@ -164,6 +164,11 @@ TitleScene::~TitleScene()
 	DeleteGraph(m_starHandle);
 	DeleteGraph(m_starOutlineHandle);
 	m_map.reset();
+
+	for (auto& graph : m_selectStage)
+	{
+		DeleteGraph(graph.handle);
+	}
 }
 
 void

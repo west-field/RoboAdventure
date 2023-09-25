@@ -184,7 +184,6 @@
     <ClCompile Include="Util\DrawFunctions.cpp" />
     <ClCompile Include="Util\Geometry.cpp" />
     <ClCompile Include="Util\Sound.cpp" />
-    <ClCompile Include="WorldSprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -222,7 +221,6 @@
     <ClInclude Include="Util\DrawFunctions.h" />
     <ClInclude Include="Util\Geometry.h" />
     <ClInclude Include="Util\Sound.h" />
-    <ClInclude Include="WorldSprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
