@@ -12,7 +12,7 @@ namespace
 	constexpr float kSpeed = static_cast<float>(10000.0 / 60.0 / 60.0 / 60.0) - 0.01f;
 
 	constexpr float kScale = 0.005f;//モデルの大きさ
-	constexpr float kGravity = -0.1f;//重力
+	constexpr float kGravity = 0.1f;//重力
 
 	constexpr int kEffectSize = 516;//エフェクトの大きさ
 	constexpr int kAnimNum = 22;//エフェクト画像の数
