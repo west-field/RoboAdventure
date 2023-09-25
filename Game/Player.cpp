@@ -37,10 +37,10 @@ Player::Player(std::shared_ptr<Map> map) : m_update(&Player::NormalUpdate)
 {
 
 	m_model = std::make_shared<Model>(L"Data/Model/Robot.mv1", kScale, true);
-#if false
-	m_pos = VGet(10.0f, 1.0f, 0);
+#if _DEBUG
+	m_pos = VGet(10.0f, -0.3f, 0);
 #else
-	m_pos = VGet(10.0f, 5.0f, 0);
+	m_pos = VGet(10.0f, -0.3f, 0);
 #endif
 	m_model->SetPos(m_pos);
 
@@ -266,9 +266,9 @@ void Player::SwitchAnimation(PlayerAnimation animNo, bool isLoop, bool isForceCh
 
 bool Player::OnCamera()
 {
-	//二つの座標であらわされるボックスがカメラの視界に入っていないかどうかを判定する
-	if (CheckCameraViewClip_Box(VAdd(m_pos, VGet(kSizeX, kSizeY, 0.0f)),
-		VAdd(m_pos, VGet(-kSizeX, 0.0f, 0.0f))))//true:視界に入っていない false:視界に入っている
+	//キャラクターの位置が1.0fよりも小さいとき && 二つの座標であらわされるボックスがカメラの視界に入っていないかどうかを判定する
+	if (m_pos.y <= 1.0f && CheckCameraViewClip_Box(VAdd(m_pos, VGet(kSizeX, kSizeY, kSizeX)),
+		VAdd(m_pos, VGet(-kSizeX, 0.0f, -kSizeX))))//true:視界に入っていない false:視界に入っている
 	{
 		return false;
 	}
