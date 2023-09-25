@@ -10,7 +10,6 @@ class Map;
 class Camera;
 class Model;
 class ItemStar;
-class FileInformation;
 
 /// <summary>
 /// ゲームオーバーシーン
@@ -18,7 +17,7 @@ class FileInformation;
 class GameoverScene : public Scene
 {
 public:
-    GameoverScene(SceneManager& manager, const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model);
+    GameoverScene(SceneManager& manager, const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model,bool getCoin1, bool getCoin2, bool getCoin3);
     virtual ~GameoverScene();
 
     void Update(const InputState& input);
@@ -43,8 +42,6 @@ private:
     std::shared_ptr<Camera> m_camera;
 
     std::shared_ptr<Model> m_model;//表示するプレイヤーモデルモデル
-
-    std::shared_ptr<FileInformation> m_file;//次のステージへ行けるように
 
     std::shared_ptr<ItemStar> m_starHandle[3];//収集物表示
     bool m_getStar[3];//取得状況

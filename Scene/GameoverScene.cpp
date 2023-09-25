@@ -11,7 +11,6 @@
 #include "TitleScene.h"
 #include "GameplayingScene.h"
 #include "../Game/Item/ItemCoin.h"
-#include "../Util/FileInformation.h"
 
 namespace
 {
@@ -25,7 +24,7 @@ namespace
 	constexpr int kFontSize = 75;
 }
 
-GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model) :
+GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model, bool getCoin1, bool getCoin2, bool getCoin3) :
 	Scene(manager),  m_updateFunc(&GameoverScene::FadeInUpdat),
 	m_drawFunc(&GameoverScene::NormalDraw) , m_camera(camera), m_model(model), m_score(score)
 {
@@ -41,13 +40,10 @@ GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const
 	m_model->SetRot(VGet(0.0f, 95.0f, 0.0f));
 	m_model->SetScale(VGet(kScale, kScale, kScale));
 
-	m_file = std::make_shared<FileInformation>();//ファイル
-	m_file->Load();
-	Header header = m_file->GetHeader(selectStage);
-	for (int i = 0; i < 3; i++)
-	{
-		m_getStar[i] = header.isCoinGet[i];
-	}
+	//スター取得状況
+	m_getStar[0] = getCoin1;
+	m_getStar[1] = getCoin2;
+	m_getStar[2] = getCoin3;
 
 	//スターモデル
 	int handle1 = MV1LoadModel(L"Data/Model/Star.mv1");

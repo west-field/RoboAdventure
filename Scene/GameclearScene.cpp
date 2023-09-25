@@ -36,7 +36,7 @@ namespace
 	constexpr int kHighScoreDrawPosY = 130;//ハイスコアを表示する位置Y
 }
 
-GameclearScene::GameclearScene(SceneManager& manager,const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model) :
+GameclearScene::GameclearScene(SceneManager& manager,const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model, bool getCoin1, bool getCoin2, bool getCoin3) :
 	Scene(manager), m_updateFunc(&GameclearScene::FadeInUpdat),
 	m_drawFunc(&GameclearScene::NormalDraw) , m_camera(camera), m_model(model)
 {
@@ -46,6 +46,10 @@ GameclearScene::GameclearScene(SceneManager& manager,const int selectStage, cons
 	
 	m_file = std::make_shared<FileInformation>();
 	m_file->Load();//各ステージの情報取得
+
+	m_file->Clear(m_selectStage, m_score, getCoin1, getCoin2, getCoin3);//選択したステージ、スコア、スター獲得状況
+	m_file->Save();
+
 
 	m_map = std::make_shared<Map>(kFileName,0.0f,0);//ゲームクリアで使用するマップ
 
@@ -59,10 +63,9 @@ GameclearScene::GameclearScene(SceneManager& manager,const int selectStage, cons
 	m_score = score;//今回のスコア
 	m_highScore = header.highScore;//ハイスコア
 	//スター取得状況
-	for (int i = 0; i < 3; i++)
-	{
-		m_getCoin[i] = header.isCoinGet[i];
-	}
+	m_getCoin[0] = getCoin1;
+	m_getCoin[1] = getCoin2;
+	m_getCoin[2] = getCoin3;
 
 	//スターモデル
 	int handle1 = MV1LoadModel(L"Data/Model/Star.mv1");
