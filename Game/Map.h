@@ -39,6 +39,9 @@ enum MapChipType
 	rock2,
 	tree,
 	goalFlag,
+	soilGroundLeft,
+	soilGroundRight,
+	soilGround,
 
 	max
 };

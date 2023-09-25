@@ -379,6 +379,8 @@ void Map::LoadModel(float add)
 		rock2,
 		tree,
 		goalFlag,
+		soilGround,
+		soilGround2,
 
 		max
 	};
@@ -394,6 +396,8 @@ void Map::LoadModel(float add)
 	model[rock2] = MV1LoadModel(L"Data/Model/Rock_2.mv1");//岩2つ
 	model[tree] = MV1LoadModel(L"Data/Model/Tree.mv1");//木
 	model[goalFlag] = MV1LoadModel(L"Data/Model/Goal_Flag.mv1");//フラグ
+	model[soilGround] = MV1LoadModel(L"Data/Model/Cube_Dirt_Side_Tall.mv1");//地面,上と前のみ
+	model[soilGround2] = MV1LoadModel(L"Data/Model/Cube_Dirt_Corner_Tall.mv1");//地面,上と前と横
 
 	float rot = -90.0f * (DX_PI_F / 180.0f);//横があるブロックを反対向きにさせる
 
@@ -508,6 +512,25 @@ void Map::LoadModel(float add)
 					CollisionInfo(isCol, VGet((kDrawScale * 2) * x, kStartPos - (kDrawScale * 2) * y - 0.65f, 0.0f), size),
 					static_cast<EventChipType>(eventChip) });
 			}
+			else if (mapChip == MapChipType::soilGroundRight)
+			{
+				m_piece.push_back(Piece{ std::make_shared<Model>(model[soilGround2], kScale * scaleSize,isCol) ,
+					CollisionInfo(isCol, VGet((kDrawScale * 2) * x, kStartPos - (kDrawScale * 2) * y, 0.0f), size),
+					static_cast<EventChipType>(eventChip) });
+				m_piece.back().model->SetRot(VGet(0.0f, rot, 0.0f));
+			}
+			else if (mapChip == MapChipType::soilGroundLeft)
+			{
+				m_piece.push_back(Piece{ std::make_shared<Model>(model[soilGround2], kScale * scaleSize,isCol) ,
+					CollisionInfo(isCol, VGet((kDrawScale * 2) * x, kStartPos - (kDrawScale * 2) * y, 0.0f), size),
+					static_cast<EventChipType>(eventChip) });
+			}
+			else if (mapChip == MapChipType::soilGround)
+			{
+				m_piece.push_back(Piece{ std::make_shared<Model>(model[soilGround], kScale * scaleSize,isCol) ,
+					CollisionInfo(isCol, VGet((kDrawScale * 2) * x, kStartPos - (kDrawScale * 2) * y, 0.0f), size),
+					static_cast<EventChipType>(eventChip) });
+			}
 
 			//当たり判定の作成
 			m_piece.back().coll.isCenter = true;
@@ -586,6 +609,25 @@ void Map::LoadModel(float add)
 				m_bgModel.push_back(std::make_shared<Model>(model[tree], kScale, false));
 				m_bgModel.back()->SetPos(VGet((kDrawScale * 2)* x, kStartPos - (kDrawScale * 2) * y - 0.65f, (kDrawScale * 2) + add));
 				continue;
+			}
+			else if (mapChip == MapChipType::goalFlag)
+			{
+				m_bgModel.push_back(std::make_shared<Model>(model[goalFlag], kScale, false));
+				m_bgModel.back()->SetPos(VGet((kDrawScale * 2)* x, kStartPos - (kDrawScale * 2) * y - 0.65f, (kDrawScale * 2) + add));
+				continue;
+			}
+			else if (mapChip == MapChipType::soilGroundRight)
+			{
+				m_bgModel.push_back(std::make_shared<Model>(model[soilGround2], kScale, false));
+				m_bgModel.back()->SetRot(VGet(0.0f, rot, 0.0f));
+			}
+			else if (mapChip == MapChipType::soilGroundLeft)
+			{
+				m_bgModel.push_back(std::make_shared<Model>(model[soilGround2], kScale, false));
+			}
+			else if (mapChip == MapChipType::soilGround)
+			{
+				m_bgModel.push_back(std::make_shared<Model>(model[soilGround], kScale, false));
 			}
 
 			m_bgModel.back()->SetPos(VGet((kDrawScale * 2)* x, kStartPos - (kDrawScale * 2) * y, (kDrawScale * 2) + add));
