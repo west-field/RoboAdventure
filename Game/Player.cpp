@@ -8,7 +8,7 @@
 
 namespace
 {
-	constexpr float kMoveSpeed = static_cast<float>(10000.0 / 60.0 / 60.0 / 60.0);//移動スピード
+	constexpr float kMoveSpeed = static_cast<float>(10000.0 / 60.0 / 60.0 / 60.0) * 1.3f;//移動スピード
 	constexpr float kJumpSpeed = 1.0f;//ジャンプ力
 	constexpr float kGravity = 0.1f;//重力
 
@@ -182,6 +182,15 @@ void Player::Draw()
 		break;
 	}
 
+	if (m_isAttack)
+	{
+		DrawFormatString(0, 80, 0x000000, L"攻撃OK");
+	}
+	else
+	{
+		DrawFormatString(0, 80, 0x000000, L"攻撃No");
+	}
+
 #endif
 }
 
@@ -229,11 +238,11 @@ void Player::Attack()
 	//上に上がる
 	if (m_jumpPower > 0.0f)
 	{
-		m_jumpPower += kJumpSpeed / 1.5f;
+		m_jumpPower += kJumpSpeed;
 	}
 	else
 	{
-		m_jumpPower = kJumpSpeed / 1.5f;
+		m_jumpPower = kJumpSpeed;
 	}
 	m_update = &Player::JumpUpdate;
 }
@@ -355,25 +364,31 @@ void Player::NormalUpdate(const InputState& input)
 
 void Player::JumpUpdate(const InputState& input)
 {
-	m_vel = VScale(VGet(m_dir.x, 0.0f, 0.0f), kMoveSpeed / 1.5f);
+	m_vel = VScale(VGet(m_dir.x, 0.0f, 0.0f), kMoveSpeed);
 	m_dir.y = -1.0f;
 	m_vel.y += m_dir.y * kGravity;
 
 	//状態がジャンプの場合は
-	if (m_animType == PlayerAnimation::WalkJump && m_jumpPower > 0.0f)
+	if (m_animType == PlayerAnimation::WalkJump /*&& m_jumpPower > 0.0f*/)
 	{
 		//重力分減少
 		m_jumpPower -= kGravity;
 
 		//移動ベクトルのY成分に代入する
 		m_vel.y += m_jumpPower;
+
+		if (m_jumpPower < -0.2f)
+		{
+			m_jumpPower = -0.2f;
+		}
 	}
 	else if(m_animType != PlayerAnimation::WalkJump)
 	{
 		m_jumpPower = 0.0f;
 		m_update = &Player::NormalUpdate;
 	}
-	else
+	
+	if (m_jumpPower < 0.0f)
 	{
 		m_isAttack = true;
 	}
@@ -675,25 +690,37 @@ void Player::Move()
 						}
 					}
 				}
-				//else
-				//{
-				//	// 床コリジョンに当たっていなくて且つジャンプ状態ではなかった場合は
-				//	if (m_animType != PlayerAnimation::WalkJump)
-				//	{
-				//		// ジャンプ中にする
-				//		m_animType = PlayerAnimation::WalkJump;
-
-				//		// ちょっとだけジャンプする
-				//		//m_jumpPower = kJumpSpeed / 2;
-
-				//		// アニメーションは落下中のものにする
-				//		SwitchAnimation(m_animType,true, false, 4);
-				//	}
-				//}
+				else
+				{
+					//床に当たっていなくてジャンプ状態でなかった場合
+					if (m_animType != PlayerAnimation::WalkJump)
+					{
+						m_vel.y += m_dir.y * kGravity * 2;
+						m_isAttack = true;
+					}
+				}
+				
 			}
 		}
+		//else
+		//{
+		//	// 床コリジョンに当たっていなくて且つジャンプ状態ではなかった場合は
+		//	if (m_animType != PlayerAnimation::WalkJump)
+		//	{
+		//		// ジャンプ中にする
+		//		m_animType = PlayerAnimation::WalkJump;
 
+		//		// ちょっとだけジャンプする
+		//		//m_jumpPower = kJumpSpeed / 2;
 
+		//		m_jumpPower -= kGravity;
+
+		//		// アニメーションは落下中のものにする
+		//		SwitchAnimation(m_animType,true, false, 4);
+		//		//ジャンプのアップデートへ移動
+		//		m_update = &Player::JumpUpdate;
+		//	}
+		//}
 	}
 
 	// 新しい座標を保存する
