@@ -28,10 +28,10 @@ PauseScene::PauseScene(SceneManager& manager,int soundH) : Scene(manager), m_sou
 	m_pauseMenu[static_cast<int>(Item::pauseSound)].y = PushSceneWindow::kPosY + kFontSize * 2 * (static_cast<int>(Item::pauseSound) + 1) + i;
 	m_pauseMenu[static_cast<int>(Item::pauseSound)].name = L"音量せってい";
 	i += 10;
-	m_pauseMenu[static_cast<int>(Item::pauseFullscreen)].x = PushSceneWindow::kPosX + 10;
+	/*m_pauseMenu[static_cast<int>(Item::pauseFullscreen)].x = PushSceneWindow::kPosX + 10;
 	m_pauseMenu[static_cast<int>(Item::pauseFullscreen)].y = PushSceneWindow::kPosY + kFontSize * 2 * (static_cast<int>(Item::pauseFullscreen) + 1) + i;
 	m_pauseMenu[static_cast<int>(Item::pauseFullscreen)].name = L"スクリーンモード変更";
-	i += 10;
+	i += 10;*/
 	m_pauseMenu[static_cast<int>(Item::pauseBack)].x = PushSceneWindow::kPosX + 10;
 	m_pauseMenu[static_cast<int>(Item::pauseBack)].y = PushSceneWindow::kPosY + kFontSize * 2 * (static_cast<int>(Item::pauseBack) + 1) + i;
 	m_pauseMenu[static_cast<int>(Item::pauseBack)].name = L"閉じる";
@@ -107,9 +107,9 @@ void PauseScene::Update(const InputState& input)
 			SoundManager::GetInstance().Play(SoundId::Determinant);
 			m_manager.PushScene(new SoundSettingScene(m_manager, m_soundH));
 			return;
-		case static_cast<int>(Item::pauseFullscreen):
-			SoundManager::GetInstance().Play(SoundId::Determinant);
-			m_manager.PushScene(new ConfirmationScene(m_manager, L"スクリーンモード変更しますか", SelectType::SceneMode, m_soundH));
+		//case static_cast<int>(Item::pauseFullscreen):
+		//	SoundManager::GetInstance().Play(SoundId::Determinant);
+		//	m_manager.PushScene(new ConfirmationScene(m_manager, L"スクリーンモード変更しますか", SelectType::SceneMode, m_soundH));
 			return;
 		case pauseBack:
 			SoundManager::GetInstance().Play(SoundId::Back);

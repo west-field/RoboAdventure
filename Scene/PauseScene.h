@@ -23,7 +23,7 @@ private:
 	{
 		pauseKeyconfig,//キー設定
 		pauseSound,//音量設定
-		pauseFullscreen,//画面表示を切り替える
+		//pauseFullscreen,//画面表示を切り替える
 		pauseBack,//閉じる
 		pauseTitle,//タイトルに戻る
 		pauseGameEnd,//ゲームを終わる
