@@ -75,6 +75,8 @@ private:
      /// </summary>
      void CreateItem();
 private:
+    void PointDraw(int leftX, int y, int dispNum, int digit = -1);
+
     unsigned int m_fadeColor = 0x000000;//フェードの色（黒
     
     void (GameplayingScene::* m_updateFunc)(const InputState& input);
@@ -96,8 +98,11 @@ private:
     int m_fadetimer;//フェードの時間
 
     int m_score;//スコア
+    int m_addScore;//1ずつスコアを表示させるために取得したスコアを保持しておく
 
     int m_starHandle;//スターを表示する
     int m_starOutlineHandle;//スター枠を表示する
+
+    int m_numGraphHandle;//数字の画像ハンドル
 };
 

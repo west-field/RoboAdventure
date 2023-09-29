@@ -29,6 +29,12 @@ namespace
 	constexpr int kStarGraphSize = 60;//画像の大きさ
 	constexpr int kStarGraphStartX = 50;//表示し始める位置X
 	constexpr int kStarGraphStartY = 130;//表示し始める位置Y
+
+	//数字画像
+	constexpr int kFontGraphSizeX = 24;// 32;
+	constexpr int kFontGraphSizeY = 37;// 15;
+
+	constexpr int kScoreDrawPosX = Game::kScreenWidth;
 }
 
 GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const fileName, const int select, std::shared_ptr<Camera> camera) :
@@ -45,6 +51,7 @@ GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const f
 	m_fadetimer = 5;
 
 	m_score = 0;
+	m_addScore = 0;
 	//BGM
 	m_BgmH = LoadSoundMem(L"Data/Sound/BGM/playSound.mp3");
 	ChangeVolumeSoundMem(0, m_BgmH);
@@ -52,6 +59,8 @@ GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const f
 
 	m_starHandle = LoadGraph(L"Data/Img/star.png");
 	m_starOutlineHandle = LoadGraph(L"Data/Img/star_outline.png");
+
+	m_numGraphHandle = LoadGraph(L"Data/Img/num.png");
 }
 
 GameplayingScene::~GameplayingScene()
@@ -65,6 +74,7 @@ GameplayingScene::~GameplayingScene()
 	DeleteGraph(m_starHandle);
 	DeleteGraph(m_starOutlineHandle);
 	
+	DeleteGraph(m_numGraphHandle);
 }
 
 void GameplayingScene::Update(const InputState& input)
@@ -78,9 +88,8 @@ void GameplayingScene::Draw()
 {
 	m_map->Draw();//マップを表示
 	m_player->Draw();//プレイヤー表示
-	SetFontSize(50);
-	DrawFormatString(Game::kScreenWidth - 500, 0, 0x000000, L"%d", m_score);//スコア表示
-	SetFontSize(0);
+
+	PointDraw(kScoreDrawPosX, 0, m_score);//スコア表示
 
 	//スターを表示
 	bool getCoin[3] = {false};
@@ -232,6 +241,8 @@ void GameplayingScene::MoveCameraCloser(const InputState& input)
 		switch (m_crea)
 		{
 		case 0:
+			//残っていたHP分だけ得点を追加する
+			m_addScore = m_player->GetHp() * 100;
 			m_updateFunc = &GameplayingScene::GameclearUpdate;
 			break;
 		case 1:
@@ -271,8 +282,20 @@ void GameplayingScene::GameclearUpdate(const InputState& input)
 	}
 	m_fade += m_fadetimer;
 
+	if (m_addScore != 0)
+	{
+		m_addScore--;
+		m_score++;
+		SoundManager::GetInstance().Play(SoundId::Score);//スコア取得音を鳴らす
+	}
+
 	if (input.IsTriggered(InputType::next))
 	{
+		if (m_addScore != 0)
+		{
+			m_score += m_addScore;
+		}
+
 		SoundManager::GetInstance().Play(SoundId::Determinant);
 		m_updateFunc = &GameplayingScene::FadeOutUpdat;
 		return;
@@ -429,5 +452,50 @@ void GameplayingScene::CreateItem()
 			m_itemFactory->Create(type, pos);
 			m_map->GetItemParam(x, y);
 		}
+	}
+}
+
+void GameplayingScene::PointDraw(int leftX, int y, int dispNum, int digit)
+{
+	int digitNum = 0;
+	int temp = dispNum;
+	int cutNum = 10;	// 表示桁数指定時に表示をおさめるために使用する
+
+	// 表示する数字の桁数数える
+	while (temp > 0)
+	{
+		digitNum++;
+		temp /= 10;
+		cutNum *= 10;
+	}
+	if (digitNum <= 0)
+	{
+		digitNum = 1;	// 0の場合は1桁表示する
+	}
+
+	// 表示桁数指定
+	temp = dispNum;
+	if (digit >= 0)
+	{
+		if (digitNum > digit)
+		{
+			// 下から指定桁数を表示するためはみ出し範囲を切り捨て
+			temp %= cutNum;
+		}
+		digitNum = digit;
+	}
+	// 一番下の桁から表示
+	int posX = leftX - kFontGraphSizeX;
+	int posY = y;
+	for (int i = 0; i < digitNum; i++)
+	{
+		int no = temp % 10;
+
+		DrawRectGraph(posX, posY,
+			no * kFontGraphSizeX, 0, kFontGraphSizeX, kFontGraphSizeY,
+			m_numGraphHandle, true);
+
+		temp /= 10;
+		posX -= kFontGraphSizeX;
 	}
 }
