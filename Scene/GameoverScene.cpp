@@ -106,7 +106,7 @@ void GameoverScene::FadeInUpdat(const InputState& input)
 	if (--m_fadeTimer == 0)
 	{
 		m_updateFunc = &GameoverScene::NormalUpdat;
-		m_fadeColor = 0x000000;
+		m_fadeColor = 0x000000;//黒色でフェードアウトする
 		m_fadeValue = 0;
 	}
 }

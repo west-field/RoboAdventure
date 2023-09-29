@@ -21,7 +21,7 @@ public:
     void Update(const InputState& input);
     void Draw();
 private:
-    unsigned int m_fadeColor = 0x000000;//フェードの色（黒
+    unsigned int m_fadeColor = 0xffffff;//フェードの色
 
     //フェードイン
     void FadeInUpdat(const InputState& input);

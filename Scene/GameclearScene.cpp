@@ -163,6 +163,7 @@ void GameclearScene::NormalUpdat(const InputState& input)
 	//待ち時間が過ぎて、nextを押したとき
 	if (m_waitingTime-- <= 0 && input.IsTriggered(InputType::next))
 	{
+		m_fadeColor = 0x000000;//黒色でフェードアウトする
 		m_updateFunc = &GameclearScene::FadeOutUpdat;
 		return;
 	}
