@@ -238,11 +238,11 @@ void Player::Attack()
 	//上に上がる
 	if (m_jumpPower > 0.0f)
 	{
-		m_jumpPower += kJumpSpeed;
+		m_jumpPower += kJumpSpeed / 1.2f;
 	}
 	else
 	{
-		m_jumpPower = kJumpSpeed;
+		m_jumpPower = kJumpSpeed / 1.2f;
 	}
 	m_update = &Player::JumpUpdate;
 }
@@ -359,7 +359,7 @@ void Player::NormalUpdate(const InputState& input)
 	m_vel = VScale(m_dir, kMoveSpeed);
 
 	m_dir.y = -1.0f;
-	m_vel.y += m_dir.y * kGravity;
+	m_vel.y += m_dir.y * (kGravity * 2);
 }
 
 void Player::JumpUpdate(const InputState& input)
@@ -402,6 +402,10 @@ void Player::JumpUpdate(const InputState& input)
 	if (m_jumpPower < 0.0f)
 	{
 		m_isAttack = true;
+	}
+	else
+	{
+		m_isAttack = false;
 	}
 }
 
@@ -621,7 +625,7 @@ void Player::Move()
 					nowPos.y = MinY - (kHitCapsuleTop + 0.5f);
 
 					// Ｙ軸方向の速度は反転
-					m_jumpPower = -m_jumpPower;
+					m_jumpPower = 0.0f;
 				}
 			}
 			else
@@ -701,15 +705,16 @@ void Player::Move()
 						}
 					}
 				}
-				else
-				{
-					//床に当たっていなくてジャンプ状態でなかった場合
-					if (m_animType != PlayerAnimation::WalkJump)
-					{
-						m_vel.y += m_dir.y * kGravity * 2;
-						m_isAttack = true;
-					}
-				}
+				//else
+				//{
+				//	//床に当たっていなくてジャンプ状態でなかった場合
+				//	if (m_animType != PlayerAnimation::WalkJump)
+				//	{
+				//		//m_animType = PlayerAnimation::WalkJump;
+				//		m_vel.y += m_dir.y * kGravity * 2;
+				//		m_isAttack = true;
+				//	}
+				//}
 				
 			}
 		}
@@ -732,6 +737,13 @@ void Player::Move()
 		//		m_update = &Player::JumpUpdate;
 		//	}
 		//}
+	}
+
+	//新しい座標Yが前の座標Yよりも小さいとき
+	if (nowPos.y < oldPos.y)
+	{
+		//攻撃できる判定に
+		m_isAttack = true;
 	}
 
 	// 新しい座標を保存する
