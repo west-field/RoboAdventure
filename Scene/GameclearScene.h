@@ -15,7 +15,7 @@ class ItemStar;
 class GameclearScene : public Scene
 {
 public:
-    GameclearScene(SceneManager& manager,const int selectStage,const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model, bool getCoin1, bool getCoin2, bool getCoin3);
+    GameclearScene(SceneManager& manager,int selectStage,int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model, bool getCoin1, bool getCoin2, bool getCoin3);
     virtual ~GameclearScene();
 
     void Update(const InputState& input);

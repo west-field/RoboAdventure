@@ -26,7 +26,7 @@ namespace
 
 GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model, bool getCoin1, bool getCoin2, bool getCoin3) :
 	Scene(manager),  m_updateFunc(&GameoverScene::FadeInUpdat),
-	m_drawFunc(&GameoverScene::NormalDraw) , m_camera(camera), m_model(model), m_score(score)
+	m_drawFunc(&GameoverScene::NormalDraw) , m_camera(camera), m_model(model)
 {
 	m_fadeColor = 0xff0000;//フェードの色（赤
 
@@ -40,6 +40,7 @@ GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const
 	m_model->SetRot(VGet(0.0f, 95.0f, 0.0f));
 	m_model->SetScale(VGet(kScale, kScale, kScale));
 
+	m_score = score;
 	//スター取得状況
 	m_getStar[0] = getCoin1;
 	m_getStar[1] = getCoin2;
