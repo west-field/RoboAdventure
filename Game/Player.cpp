@@ -364,6 +364,17 @@ void Player::NormalUpdate(const InputState& input)
 
 void Player::JumpUpdate(const InputState& input)
 {
+	if (input.IsPressed(InputType::left))
+	{
+		m_dir = VGet(-1.0f, 0.0f, 0.0f);
+		m_rot = VGet(0.0f, 95.0f, 0.0f);
+	}
+	else if (input.IsPressed(InputType::right))
+	{
+		m_dir = VGet(1.0f, 0.0f, 0.0f);
+		m_rot = VGet(0.0f, -95.0f, 0.0f);
+	}
+
 	m_vel = VScale(VGet(m_dir.x, 0.0f, 0.0f), kMoveSpeed);
 	m_dir.y = -1.0f;
 	m_vel.y += m_dir.y * kGravity;
@@ -571,7 +582,7 @@ void Player::Move()
 		if (floorCollisionNum != 0)
 		{
 			// ƒWƒƒƒ“ƒv’†Š‚Âã¸’†‚Ìê‡‚Íˆ—‚ğ•ªŠò
-			if (m_animType == PlayerAnimation::WalkJump && m_jumpPower > 0.0f)
+			if (m_animType == PlayerAnimation::WalkJump && m_jumpPower >= 0.0f)
 			{
 				float MinY;
 
@@ -587,7 +598,7 @@ void Player::Move()
 				for (int i = 0; i < floorCollisionNum; i++)
 				{
 					// ‘«æ‚©‚ç“ª‚Ì‚‚³‚Ü‚Å‚ÌŠÔ‚Åƒ|ƒŠƒSƒ“‚ÆÚG‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ”»’è
-					LineRes = HitCheck_Line_Triangle(VAdd(nowPos, VGet(0.0f, kHitLineTop + 0.5f, 0.0f)), VAdd(nowPos, VGet(0.0f, kHitLineBottom+1.0f, 0.0f)),
+					LineRes = HitCheck_Line_Triangle(VAdd(nowPos, VGet(0.0f, kHitLineTop + 0.45f, 0.0f)), VAdd(nowPos, VGet(0.0f, kHitLineBottom+1.0f, 0.0f)),
 						floorCol[i]->Position[0], floorCol[i]->Position[1], floorCol[i]->Position[2]);
 
 					// ÚG‚µ‚Ä‚¢‚È‚©‚Á‚½‚ç‰½‚à‚µ‚È‚¢
