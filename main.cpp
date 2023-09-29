@@ -62,10 +62,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	SetLightDirection(VGet(0.0f, -10.0f, 1.0f));
 	//ライトの位置
 	SetLightPosition(VAdd(VGet(10.0f, 3.0f, -10.0f), VGet(0.0f, 200.0f, -100.0f)));
-#if true
-	bool isTriggerWindouMode = false;//ALTとENTERを押しているか
-	bool isWindouwMode = Game::kWindowMode;//ウィンドウモードを変更する
-#endif
 
 	while (ProcessMessage() != -1)
 	{
@@ -83,66 +79,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		ClearDrawScreen();
 
 		sceneManeger.Draw();
-#if false
-		if (CheckHitKey(KEY_INPUT_LALT))
-		{
-			if (CheckHitKey(KEY_INPUT_RETURN))
-			{
-				if (!isTriggerWindouMode)
-				{
-					isWindouwMode = !isWindouwMode;
-					ChangeWindowMode(isWindouwMode);
-					sceneManeger.SetIsWindouMode(isWindouwMode);
-					SetDrawScreen(DX_SCREEN_BACK);//描画先を再定義
-				}
-				isTriggerWindouMode = true;
-			}
-			else
-			{
-				SetDrawScreen(DX_SCREEN_BACK);//描画先を再定義
-				isTriggerWindouMode = false;
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_F4))
-		{
-			if (!isTriggerWindouMode)
-			{
-				isWindouwMode = !isWindouwMode;
-				ChangeWindowMode(isWindouwMode);
-				sceneManeger.SetIsWindouMode(isWindouwMode);
-			}
-			SetDrawScreen(DX_SCREEN_BACK);//描画先を再定義
-		}
-#endif
-
-#if false
-		// XYZ軸
-		float lineSize = 100.0f;
-		DrawLine3D(VGet(-lineSize, 0, 0), VGet(lineSize, 0, 0), GetColor(255, 0, 0));
-		DrawLine3D(VGet(0, -lineSize, 0), VGet(0, lineSize, 0), GetColor(0, 255, 0));
-		DrawLine3D(VGet(0, 0, -lineSize), VGet(0, 0, lineSize), GetColor(0, 0, 255));
-
-		//// マップチップライン(マップチップをどう配置するか)
-		//// プレイヤーの地面をY=0としたいので、その周りを配置し、大体の基準でカメラを決める
-		//for (int i = 0; i < 16 + 2; i++)
-		//{
-		//	// X軸とかぶるところはとりあえず描画しない
-		//	if (i != 1)
-		//	{
-		//		float y = 32 * (i - 1); // 一個下のラインからチップが始まる
-		//		DrawLine3D(VGet(-lineSize, y, 0), VGet(lineSize, y, 0), GetColor(255, 255, 0));
-		//	}
-		//}
-		//for (int i = 0; i < 15 + 1; i++)
-		//{
-		//	// X軸とかぶるところはとりあえず描画しない
-		//	if (i != 1)
-		//	{
-		//		float x = 32 * (i - 1); // 一個下のラインからチップが始まる
-		//		DrawLine3D(VGet(x, -100, 0), VGet(x, 100, 0), GetColor(255, 255, 255));
-		//	}
-		//}
-#endif
 
 		// Effekseerにより再生中のエフェクトを描画する。
 		DrawEffekseer3D();
@@ -156,6 +92,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		// fpsを60に固定
 		while (GetNowHiPerformanceCount() - time < 16667){}
 	}
+
+	soundManager.DeleteSound();
 
 	//エフェクシアを終了する
 	Effkseer_End();
