@@ -29,7 +29,10 @@ SoundManager::SoundManager()
 	LoadSoundFile(SoundId::EnemyBurst,L"enemyBurst.mp3");//
 
 	LoadSoundFile(SoundId::StarGet,L"getStar.mp3");//
+
+	LoadSoundFile(SoundId::Score,L"score.mp3");//
 }
+
 SoundManager::~SoundManager()
 {
 }
@@ -114,4 +117,12 @@ int SoundManager::GetBGMVolume() const
 void SoundManager::StopBgm(SoundId id)
 {
 	StopSoundMem(nameAndHandleTable_[id]);
+}
+
+void SoundManager::DeleteSound()
+{
+	for (auto& sound : nameAndHandleTable_)
+	{
+		DeleteSoundMem(sound.second);
+	}
 }

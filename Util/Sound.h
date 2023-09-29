@@ -21,6 +21,8 @@ enum class SoundId
 
 	StarGet,//星を取得したときの音
 
+	Score,//スコア取得音(クリアしたときに鳴らす)
+
 	SoundId_Max
 };
 
@@ -104,6 +106,8 @@ public:
 	/// </summary>
 	/// <param name="id">サウンド名</param>
 	void StopBgm(SoundId id);
+
+	void DeleteSound();
 };
 
 
