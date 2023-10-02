@@ -484,19 +484,19 @@ void Map::LoadModel(float add)
 			}
 			else if (mapChip == MapChipType::woodenBox)
 			{
-				m_piece.push_back(Piece{ std::make_shared<Model>(model[woodenBox], kScale * scaleSize,isCol) ,
+				m_piece.push_back(Piece{ std::make_shared<Model>(model[woodenBox], kScale,isCol) ,
 					CollisionInfo(isCol, VGet((kDrawScale * 2) * x, kStartPos - (kDrawScale * 2) * y, 0.0f), size),
 					static_cast<EventChipType>(eventChip) });
 			}
 			else if (mapChip == MapChipType::rock1)
 			{
-				m_piece.push_back(Piece{ std::make_shared<Model>(model[rock1], kScale * scaleSize,isCol) ,
+				m_piece.push_back(Piece{ std::make_shared<Model>(model[rock1], kScale,isCol) ,
 					CollisionInfo(isCol, VGet((kDrawScale * 2) * x, kStartPos - (kDrawScale * 2) * y - 0.65f, 0.0f), size),
 					static_cast<EventChipType>(eventChip) });
 			}
 			else if (mapChip == MapChipType::rock2)
 			{
-				m_piece.push_back(Piece{ std::make_shared<Model>(model[rock2], kScale * scaleSize,isCol) ,
+				m_piece.push_back(Piece{ std::make_shared<Model>(model[rock2], kScale,isCol) ,
 					CollisionInfo(isCol, VGet((kDrawScale * 2) * x, kStartPos - (kDrawScale * 2) * y - 0.65f, 0.0f), size),
 					static_cast<EventChipType>(eventChip) });
 			}
@@ -554,11 +554,11 @@ void Map::LoadModel(float add)
 			if (mapChip == 0)	continue;
 			if (mapChip == MapChipType::grassGround)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[GrassModel], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[GrassModel], kScale* scaleSize, false));
 			}
 			else if (mapChip == MapChipType::underground)
 			{
-				m_bgModel.push_back( std::make_shared<Model>(model[dirtModel], kScale, false));
+				m_bgModel.push_back( std::make_shared<Model>(model[dirtModel], kScale* scaleSize, false));
 			}
 			else if (mapChip == MapChipType::block)
 			{
@@ -566,21 +566,21 @@ void Map::LoadModel(float add)
 			}
 			else if (mapChip == MapChipType::grassGroundRight)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[GrassModel2], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[GrassModel2], kScale* scaleSize, false));
 				m_bgModel.back()->SetRot(VGet(0.0f, rot, 0.0f));
 			}
 			else if (mapChip == MapChipType::undergroundRight)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[dirtModel2], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[dirtModel2], kScale* scaleSize, false));
 				m_bgModel.back()->SetRot(VGet(0.0f, rot, 0.0f));
 			}
 			else if (mapChip == MapChipType::grassGroundLeft)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[GrassModel2], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[GrassModel2], kScale* scaleSize, false));
 			}
 			else if (mapChip == MapChipType::undergroundLeft)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[dirtModel2], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[dirtModel2], kScale* scaleSize, false));
 			}
 			else if (mapChip == MapChipType::bush)
 			{
@@ -612,22 +612,22 @@ void Map::LoadModel(float add)
 			}
 			else if (mapChip == MapChipType::goalFlag)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[goalFlag], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[goalFlag], kScale * 2, false));
 				m_bgModel.back()->SetPos(VGet((kDrawScale * 2)* x, kStartPos - (kDrawScale * 2) * y - 0.65f, (kDrawScale * 2) + add));
 				continue;
 			}
 			else if (mapChip == MapChipType::soilGroundRight)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[soilGround2], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[soilGround2], kScale * scaleSize, false));
 				m_bgModel.back()->SetRot(VGet(0.0f, rot, 0.0f));
 			}
 			else if (mapChip == MapChipType::soilGroundLeft)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[soilGround2], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[soilGround2], kScale * scaleSize, false));
 			}
 			else if (mapChip == MapChipType::soilGround)
 			{
-				m_bgModel.push_back(std::make_shared<Model>(model[soilGround], kScale, false));
+				m_bgModel.push_back(std::make_shared<Model>(model[soilGround], kScale * scaleSize, false));
 			}
 
 			m_bgModel.back()->SetPos(VGet((kDrawScale * 2)* x, kStartPos - (kDrawScale * 2) * y, (kDrawScale * 2) + add));
