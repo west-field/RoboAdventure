@@ -167,7 +167,6 @@
     <ClCompile Include="Game\Hp.cpp" />
     <ClCompile Include="InputState.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Game\TestPlayer.cpp" />
     <ClCompile Include="Game\Map.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Scene\GameclearScene.cpp" />
@@ -204,7 +203,6 @@
     <ClInclude Include="Game\Enemy\EnemyStraightFly.h" />
     <ClInclude Include="Game\Hp.h" />
     <ClInclude Include="InputState.h" />
-    <ClInclude Include="Game\TestPlayer.h" />
     <ClInclude Include="Game\Map.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Scene\GameclearScene.h" />
