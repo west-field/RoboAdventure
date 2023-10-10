@@ -39,7 +39,7 @@ namespace
 	constexpr int kFadeMax = 255;//描画ブレンドのパラメータ最大(Palの値が255に近いほどグラフィックが濃く表示)
 	constexpr int kFadeNoSelectGraph = 200;//選択不可なステージの画像を表示する時のブレンドパラメータ
 
-	const wchar_t* const kTitleNext = L"Push Key or Button";//タイトルの下に表示する次へ促す文字
+	const wchar_t* const kTitleNext = L"Press Key or Button";//タイトルの下に表示する次へ促す文字
 
 	constexpr int kStageSelectGraphSize = 512;//ステージ選択画像のサイズ
 	constexpr int kDrawBoxSize = static_cast<int>(kStageSelectGraphSize * 0.5f) + 10;//画像の後ろに表示する四角のサイズ

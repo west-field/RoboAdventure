@@ -321,7 +321,7 @@ void GameplayingScene::GameclearDraw()
 
 	SetFontSize(kFontSize);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_fade);
-	DrawString(((Game::kScreenWidth / 2) - (kFontSize * 9 / 2)), Game::kScreenHeight - kTitleFontSize * 2, L"Push Key or Button", 0xffffff);
+	DrawString(((Game::kScreenWidth / 2) - (kFontSize * 9 / 2)), Game::kScreenHeight - kTitleFontSize * 2, L"Press Key or Button", 0xffffff);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	SetFontSize(0);
 }
