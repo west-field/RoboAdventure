@@ -29,6 +29,9 @@ private:
 
     void NormalDraw();
 
+    //得点表示
+    void PointDraw(int leftX, int y, int dispNum, float size = 0.5f, int digit = -1);
+
     void (GameoverScene::*m_updateFunc )(const InputState&) ;
     void (GameoverScene::*m_drawFunc )() ;
 
@@ -46,5 +49,7 @@ private:
     std::shared_ptr<ItemStar> m_starHandle[3];//収集物表示
     bool m_getStar[3];//取得状況
     int m_score;//スコア
+
+    int m_numGraphHandle;//数字画像
 };
 

@@ -31,10 +31,11 @@ namespace
 	constexpr int kStarGraphStartY = 130;//表示し始める位置Y
 
 	//数字画像
-	constexpr int kFontGraphSizeX = 24;// 32;
-	constexpr int kFontGraphSizeY = 37;// 15;
+	constexpr int kFontGraphSizeX = 48;// 24;// 32;
+	constexpr int kFontGraphSizeY = 74;// 37;// 15;
 
-	constexpr int kScoreDrawPosX = Game::kScreenWidth;
+	constexpr int kScoreDrawPosX = kStarGraphStartX * 4;
+	constexpr int kScoreDrawPosY = kStarGraphStartY + kStarGraphSize * 1.5f;
 }
 
 GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const fileName, const int select, std::shared_ptr<Camera> camera) :
@@ -87,9 +88,9 @@ void GameplayingScene::Update(const InputState& input)
 void GameplayingScene::Draw()
 {
 	m_map->Draw();//マップを表示
-	m_player->Draw();//プレイヤー表示
+	//m_player->Draw();//プレイヤー表示
 
-	PointDraw(kScoreDrawPosX, 0, m_score);//スコア表示
+	PointDraw(kScoreDrawPosX, kScoreDrawPosY, m_score);//スコア表示
 
 	//スターを表示
 	bool getCoin[3] = {false};
@@ -455,7 +456,7 @@ void GameplayingScene::CreateItem()
 	}
 }
 
-void GameplayingScene::PointDraw(int leftX, int y, int dispNum, int digit)
+void GameplayingScene::PointDraw(int leftX, int y, int dispNum, float size, int digit)
 {
 	int digitNum = 0;
 	int temp = dispNum;
@@ -485,17 +486,18 @@ void GameplayingScene::PointDraw(int leftX, int y, int dispNum, int digit)
 		digitNum = digit;
 	}
 	// 一番下の桁から表示
-	int posX = leftX - kFontGraphSizeX;
+	int posX = leftX - kFontGraphSizeX * size;
 	int posY = y;
 	for (int i = 0; i < digitNum; i++)
 	{
 		int no = temp % 10;
 
-		DrawRectGraph(posX, posY,
+		DrawRectRotaGraph(posX, posY,
 			no * kFontGraphSizeX, 0, kFontGraphSizeX, kFontGraphSizeY,
+			size, 0.0f,
 			m_numGraphHandle, true);
 
 		temp /= 10;
-		posX -= kFontGraphSizeX;
+		posX -= kFontGraphSizeX * size;
 	}
 }

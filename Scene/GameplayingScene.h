@@ -75,7 +75,7 @@ private:
      /// </summary>
      void CreateItem();
 private:
-    void PointDraw(int leftX, int y, int dispNum, int digit = -1);
+    void PointDraw(int leftX, int y, int dispNum, float size = 0.5f, int digit = -1);
 
     unsigned int m_fadeColor = 0x000000;//フェードの色（黒
     

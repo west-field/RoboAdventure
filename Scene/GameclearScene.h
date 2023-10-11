@@ -34,6 +34,9 @@ private:
     //通常表示
     void NormalDraw();
 
+    //得点表示
+    void PointDraw(int leftX, int y, int dispNum, float size = 0.5f, int digit = -1);
+
     void (GameclearScene::* m_updateFunc)(const InputState&);
     void (GameclearScene::* m_drawFunc)();
 
@@ -55,5 +58,7 @@ private:
 
     int m_score;//スコア
     int m_highScore;//ハイスコア
+
+    int m_numGraphHandle;//数字画像
 };
 

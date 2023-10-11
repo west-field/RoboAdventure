@@ -22,6 +22,13 @@ namespace
 	constexpr float kScale = 0.002f;//表示するプレイヤーモデルの大きさ
 
 	constexpr int kFontSize = 75;
+
+	//数字画像
+	constexpr int kFontGraphSizeX = 48;// 32;
+	constexpr int kFontGraphSizeY = 74;// 15;
+
+	constexpr int kScoreDrawPosX = Game::kScreenWidth / 1.7f;
+	constexpr int kScoreDrawPosY = Game::kScreenHeight / 2.0f;
 }
 
 GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model, bool getCoin1, bool getCoin2, bool getCoin3) :
@@ -71,6 +78,8 @@ GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const
 	m_BgmH = LoadSoundMem(L"Data/Sound/BGM/gameoverSound.mp3");
 	ChangeVolumeSoundMem(0, m_BgmH);
 	PlaySoundMem(m_BgmH, DX_PLAYTYPE_LOOP, true);
+
+	m_numGraphHandle = LoadGraph(L"Data/Img/num.png");
 }
 
 GameoverScene::~GameoverScene()
@@ -79,6 +88,7 @@ GameoverScene::~GameoverScene()
 	m_map.reset();
 	m_model->DeleteModel();
 	m_model.reset();
+	DeleteGraph(m_numGraphHandle);
 }
 
 void
@@ -149,6 +159,69 @@ void GameoverScene::NormalDraw()
 	}
 	//スコア表示
 	SetFontSize(kFontSize);
-	DrawFormatString(300, Game::kScreenHeight / 2, 0x00f0f0, L"　スコア : %d", m_score);
+	DrawFormatString(300, Game::kScreenHeight / 2, 0x00f0f0, L"　スコア:");
+	PointDraw(kScoreDrawPosX, kScoreDrawPosY + 30, m_score, 1.0f);//スコア表示
 	SetFontSize(0);
+}
+
+void GameoverScene::PointDraw(int leftX, int y, int dispNum, float size, int digit)
+{
+	int digitNum = 0;
+	int temp = dispNum;
+	int cutNum = 10;	// 表示桁数指定時に表示をおさめるために使用する
+
+	// 表示する数字の桁数数える
+	while (temp > 0)
+	{
+		digitNum++;
+		temp /= 10;
+		cutNum *= 10;
+	}
+	if (digitNum <= 0)
+	{
+		digitNum = 1;	// 0の場合は1桁表示する
+	}
+
+	// 表示桁数指定
+	temp = dispNum;
+	if (digit >= 0)
+	{
+		if (digitNum > digit)
+		{
+			// 下から指定桁数を表示するためはみ出し範囲を切り捨て
+			temp %= cutNum;
+		}
+		digitNum = digit;
+	}
+	// 一番下の桁から表示
+	int posX = leftX - kFontGraphSizeX * size;
+	int posY = y;
+	for (int i = 0; i < digitNum; i++)
+	{
+		int no = temp % 10;
+
+		/*DrawRectGraph(posX, posY,
+			no * kFontGraphSizeX, 0, kFontGraphSizeX, kFontGraphSizeY,
+			m_numGraphHandle, true);*/
+
+			/// <summary>
+		/// グラフィックを表示する
+		/// </summary>
+		/// <param name="left">描画したい矩形の左座標</param>
+		/// <param name="top">描画したい矩形の左座標</param>
+		/// <param name="width">描画するグラフィックのサイズ</param>
+		/// <param name="height">描画するグラフィックのサイズ</param>
+		/// <param name="scale">拡大率</param>
+		/// <param name="angle">描画角度</param>
+		/// <param name="handle">描画するグラフィックのハンドル</param>
+		/// <param name="transFlg">画像透明処理の有無</param>
+		/// <returns>画像表示</returns>
+		DrawRectRotaGraph(posX, posY,
+			no * kFontGraphSizeX, 0, kFontGraphSizeX, kFontGraphSizeY,
+			size, 0.0f,
+			m_numGraphHandle, true);
+
+		temp /= 10;
+		posX -= kFontGraphSizeX * size;
+	}
 }
