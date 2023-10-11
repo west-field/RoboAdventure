@@ -1,6 +1,5 @@
 #pragma once
 #include "Secne.h"
-#include <memory>
 
 class DebugScene : public Scene
 {
@@ -34,6 +33,8 @@ private:
 		Title,
 		Gameplaying,
 		SelectStage,
+		ClearScene,
+		gameoverScene,
 
 		SelectMax
 	};

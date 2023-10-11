@@ -2,13 +2,18 @@
 #include "SceneManager.h"
 #include "TitleScene.h"
 #include "GameplayingScene.h"
+#include "GameclearScene.h"
+#include "GameoverScene.h"
 
 #include "../game.h"
 
 #include <DxLib.h>
 
 #include "../Camera.h"
+#include "../Model.h"
 #include "../InputState.h"
+
+#include <memory>
 
 namespace
 {
@@ -50,6 +55,8 @@ void DebugScene::Draw()
 	DrawString(kStartX, kStartY, L"タイトルへ", m_color[0]);
 	DrawString(kStartX, kStartY + kFontSize, L"ゲームシーンへ", m_color[1]);
 	DrawFormatString(kStartX + 10, kStartY + kFontSize * 2, m_color[2], L"ステージ選択%d", m_stage + 1);
+	DrawString(kStartX, kStartY + kFontSize * 3, L"クリアシーンへ", m_color[3]);
+	DrawString(kStartX, kStartY + kFontSize * 4, L"ゲームオーバーシーンへ", m_color[4]);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_fadeValue);
 	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_fadeColor, true);
@@ -74,6 +81,7 @@ void DebugScene::FadeOutUpdat(const InputState& input)
 	if (++m_fadeTimer == kFadeInterval)
 	{
 		std::shared_ptr<Camera> camera = std::make_shared<Camera>();
+		std::shared_ptr<Model> model = std::make_shared<Model>(L"Data/Model/Robot.mv1", 0.002f, true);
 		const wchar_t* name = L"Data/Img/Map1.fmf";
 		switch (m_select)
 		{
@@ -98,6 +106,12 @@ void DebugScene::FadeOutUpdat(const InputState& input)
 				break;
 			}
 			m_manager.ChangeScene(new GameplayingScene(m_manager, name, m_stage, camera));
+			return;
+		case static_cast<int>(SelectScene::ClearScene):
+			m_manager.ChangeScene(new GameclearScene(m_manager, m_stage, 300, camera, model, false, false, false));
+			return;
+		case static_cast<int>(SelectScene::gameoverScene):
+			m_manager.ChangeScene(new GameoverScene(m_manager, m_stage, 300, camera, model, false, false, false));
 			return;
 		default:
 			break;
