@@ -159,7 +159,7 @@ void GameoverScene::NormalDraw()
 	}
 	//スコア表示
 	SetFontSize(kFontSize);
-	DrawFormatString(300, Game::kScreenHeight / 2, 0x00f0f0, L"　スコア:");
+	DrawFormatString(300, Game::kScreenHeight / 2, 0x000000, L"　スコア:");
 	PointDraw(kScoreDrawPosX, kScoreDrawPosY + 30, m_score, 1.0f);//スコア表示
 	SetFontSize(0);
 }

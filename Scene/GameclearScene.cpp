@@ -199,7 +199,7 @@ void GameclearScene::NormalDraw()
 	{
 		SetFontSize(kFontSize - 20);
 		DrawFormatString(x, kHighScoreDrawPosY, 0x000000, L"ハイスコア: ");
-		PointDraw(kScoreDrawPosX, kHighScoreDrawPosY + 30, m_score);//スコア表示
+		PointDraw(kScoreDrawPosX, kHighScoreDrawPosY + 30, m_highScore);//スコア表示
 		SetFontSize(kFontSize);
 		DrawFormatString(x, kScoreDrawPosY, 0x000000, L"　スコア: ");
 		PointDraw(kScoreDrawPosX, kScoreDrawPosY + 30, m_score,1.0f);//スコア表示
