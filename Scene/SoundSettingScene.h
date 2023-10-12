@@ -22,13 +22,6 @@ private:
 
 	void (SoundSettingScene::* m_updateFunc)(const InputState& input);
 
-	static constexpr int pw_width = 450;
-	static constexpr int pw_height = 350;
-	static constexpr int pw_start_x = (640 - pw_width) / 2 + 50;
-	static constexpr int pw_start_y = (480 - pw_height) / 2 + 50;
-
-	static constexpr int kPosX = pw_start_x + 10;
-	static constexpr int kPosY = pw_start_y + 30;
 	enum SoundType
 	{
 		soundTypeBGM,//BGM
