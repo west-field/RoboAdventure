@@ -35,7 +35,7 @@ namespace
 	constexpr int kFontGraphSizeY = 74;// 37;// 15;
 
 	constexpr int kScoreDrawPosX = kStarGraphStartX * 4;
-	constexpr int kScoreDrawPosY = kStarGraphStartY + kStarGraphSize * 1.5f;
+	constexpr int kScoreDrawPosY = static_cast<int>(kStarGraphStartY + kStarGraphSize * 1.5f);
 }
 
 GameplayingScene::GameplayingScene(SceneManager& manager, const wchar_t* const fileName, const int select, std::shared_ptr<Camera> camera) :
@@ -88,7 +88,7 @@ void GameplayingScene::Update(const InputState& input)
 void GameplayingScene::Draw()
 {
 	m_map->Draw();//マップを表示
-	//m_player->Draw();//プレイヤー表示
+	m_player->Draw();//プレイヤー表示
 
 	PointDraw(kScoreDrawPosX, kScoreDrawPosY, m_score);//スコア表示
 
@@ -169,7 +169,8 @@ void GameplayingScene::NormalUpdat(const InputState& input)
 	//プレイヤーとの当たり判定
 	CollisionPlayer();
 
-	if (m_map->GetEventParam(m_player->GetPos().x, m_player->GetPos().y) == static_cast<int>(EventChipType::crea))
+	float x, y;
+	if (m_map->GetEventParam(m_player->GetPos().x, m_player->GetPos().y,x,y) == static_cast<int>(EventChipType::crea))
 	{
 		m_player->SwitchAnimation(PlayerAnimation::Dance, true, true, 4);
 		m_updateFunc = &GameplayingScene::MoveCameraCloser;
@@ -179,7 +180,7 @@ void GameplayingScene::NormalUpdat(const InputState& input)
 		return;
 	}
 	//プレイヤーがカメラの範囲外にいるとき または プレイヤーのHPが0の時 ゲームオーバー
-	if (!m_player->OnCamera() || m_player->GetHp() == 0)
+	if (/*!m_player->OnCamera()*/m_map->GetEventParam(m_player->GetPos().x, m_player->GetPos().y, x, y) == static_cast<int>(EventChipType::deth) || m_player->GetHp() == 0)
 	{
 		m_player->SwitchAnimation(PlayerAnimation::Death, false, true, 4);
 		m_updateFunc = &GameplayingScene::MoveCameraCloser;
@@ -486,7 +487,7 @@ void GameplayingScene::PointDraw(int leftX, int y, int dispNum, float size, int 
 		digitNum = digit;
 	}
 	// 一番下の桁から表示
-	int posX = leftX - kFontGraphSizeX * size;
+	int posX = static_cast<int>(leftX - kFontGraphSizeX * size);
 	int posY = y;
 	for (int i = 0; i < digitNum; i++)
 	{
@@ -498,6 +499,6 @@ void GameplayingScene::PointDraw(int leftX, int y, int dispNum, float size, int 
 			m_numGraphHandle, true);
 
 		temp /= 10;
-		posX -= kFontGraphSizeX * size;
+		posX -= static_cast<int>(kFontGraphSizeX * size);
 	}
 }

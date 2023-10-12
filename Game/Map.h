@@ -52,10 +52,9 @@ enum class EventChipType
 {
 	no,
 
-	plan,
-	deth,
-	crea,
-	block,
+	hit,//床
+	deth,//死
+	crea,//ゲームクリア
 
 	max
 };
@@ -136,8 +135,10 @@ public :
 	/// </summary>
 	/// <param name="x">現在のX座標</param>
 	/// <param name="y">現在のY座標</param>
+	/// <param name="posx">X座標</param>
+	/// <param name="posy">Y座標</param>
 	/// <returns></returns>
-	int GetEventParam(float x, float y);
+	int GetEventParam(float x, float y, float& posx, float& posy);
 
 	/// <summary>
 	/// 現在の位置にあるエネミーチップを取得する
@@ -189,8 +190,6 @@ private:
 	std::vector<VECTOR> m_pos;//チップ取得のために使用する
 
 	std::vector<std::shared_ptr<Model>> m_bgModel;//背景用モデル
-	//std::vector<int> m_bgModelDraw;//背景用表示したかしていないかを判定する
-	//std::vector<Line> m_line;
 
 	//2D背景
 	struct Bg

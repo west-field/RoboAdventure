@@ -8,8 +8,8 @@
 
 namespace
 {
-	constexpr float kMoveSpeed = static_cast<float>(10000.0 / 60.0 / 60.0 / 60.0) * 1.3f;//移動スピード
-	constexpr float kJumpSpeed = 1.0f;//ジャンプ力
+	constexpr float kMoveSpeed = static_cast<float>(10000.0 / 60.0 / 60.0 / 60.0) * 1.4f;//移動スピード
+	constexpr float kJumpSpeed = 0.7f;//ジャンプ力
 	constexpr float kGravity = 0.1f;//重力
 
 	constexpr int kSlideTryNum = 16;//位置の補正をする回数
@@ -133,11 +133,16 @@ void Player::Draw()
 	DrawFormatString(0, 20, 0xffffff, L"pos.x%lf,y%lf,z%lf", m_pos.x, m_pos.y, m_pos.z);//モデル表示位置
 	DrawFormatString(0, 40, 0xffffff, L"jump%lf", m_jumpPower);//ジャンプの高さを変更
 
-	DrawSphere3D(VAdd(m_pos, VGet(0.0f, kSizeY / 3, 0.0f)), kCapsuleRadius + VSize(m_dir), 10, 0xffffff, 0xffffff, false);//スフィア
-	DrawCapsule3D(VAdd(m_pos, VGet(0.0f, kHitCapsuleBottom, 0.0f)), VAdd(m_pos, VGet(0.0f, kHitCapsuleTop, 0.0f)),
-		kCapsuleRadius, 10, 0xffffff, 0xffffff, false);//カプセル
+	DrawLine3D(VGet(m_pos.x - kSizeX, m_pos.y + kSizeY, 0.0f), VGet(m_pos.x + kSizeX, m_pos.y + kSizeY, 0.0f), 0x0f0f0f);//左上 右上
+	DrawLine3D(VGet(m_pos.x - kSizeX, m_pos.y - 0.1f  , 0.0f), VGet(m_pos.x + kSizeX, m_pos.y - 0.1f  , 0.0f), 0x0f0f0f);//左下　右下
+	DrawLine3D(VGet(m_pos.x - kSizeX, m_pos.y + kSizeY, 0.0f), VGet(m_pos.x - kSizeX, m_pos.y - 0.1f  , 0.0f), 0x0f0f0f);//左上　左下
+	DrawLine3D(VGet(m_pos.x + kSizeX, m_pos.y + kSizeY, 0.0f), VGet(m_pos.x + kSizeX, m_pos.y - 0.1f  , 0.0f), 0x0f0f0f);//右上　右下
 
-	DrawLine3D(VAdd(m_pos, VGet(0.0f, (kHitCapsuleTop + 0.5f), 0.0f)), VAdd(m_pos, VGet(0.0f, kHitLineBottom - 0.2f, 0.0f)), 0xff0000);//線
+	//DrawSphere3D(VAdd(m_pos, VGet(0.0f, kSizeY / 3, 0.0f)), kCapsuleRadius + VSize(m_dir), 10, 0xffffff, 0xffffff, false);//スフィア
+	//DrawCapsule3D(VAdd(m_pos, VGet(0.0f, kHitCapsuleBottom, 0.0f)), VAdd(m_pos, VGet(0.0f, kHitCapsuleTop, 0.0f)),
+	//	kCapsuleRadius, 10, 0xffffff, 0xffffff, false);//カプセル
+
+	//DrawLine3D(VAdd(m_pos, VGet(0.0f, (kHitCapsuleTop + 0.5f), 0.0f)), VAdd(m_pos, VGet(0.0f, kHitLineBottom - 0.2f, 0.0f)), 0xff0000);//線
 
 	//今再生しているアニメーションを文字で表示
 	switch (m_animType)
@@ -190,6 +195,8 @@ void Player::Draw()
 	{
 		DrawFormatString(0, 80, 0x000000, L"攻撃No");
 	}
+
+	//printfDx(L"%lf  %lf\n", m_pos.y,m_vel.y);
 
 #endif
 }
@@ -347,6 +354,7 @@ void Player::NormalUpdate(const InputState& input)
 			m_vel.y = m_jumpPower;
 			//ジャンプのアップデートへ移動
 			m_update = &Player::JumpUpdate;
+			return;
 		}
 	}
 
@@ -359,7 +367,7 @@ void Player::NormalUpdate(const InputState& input)
 	m_vel = VScale(m_dir, kMoveSpeed);
 
 	m_dir.y = -1.0f;
-	m_vel.y += m_dir.y * (kGravity * 2);
+	m_vel.y += m_dir.y * kGravity * 2;
 }
 
 void Player::JumpUpdate(const InputState& input)
@@ -383,7 +391,7 @@ void Player::JumpUpdate(const InputState& input)
 	if (m_animType == PlayerAnimation::WalkJump /*&& m_jumpPower > 0.0f*/)
 	{
 		//重力分減少
-		m_jumpPower -= kGravity;
+		m_jumpPower -= (kGravity / 2);
 
 		//移動ベクトルのY成分に代入する
 		m_vel.y += m_jumpPower;
@@ -411,6 +419,71 @@ void Player::JumpUpdate(const InputState& input)
 
 void Player::Move()
 {
+	//プレイヤーとマップの当たり判定
+
+
+#if true
+	//キャラクターのサイズ kSizeX,kSizeY
+
+	float Dummy = 0.0f;
+
+	//左下のチェック、もし『ブロックの上辺』についていたら落下を止める
+	if (MapHitCheck(m_pos.x - kSizeX, m_pos.y - 0.1f, Dummy, m_vel.y) == Hit::Up)
+	{
+		//m_vel.y = 0.0f;
+		m_animType = PlayerAnimation::Idle;
+		m_jumpPower = 0.0f;
+	}
+	//右下のチェック、もし『ブロックの上辺』についていたら落下を止める
+	if (MapHitCheck(m_pos.x + kSizeX, m_pos.y - 0.1f, Dummy, m_vel.y) == Hit::Up)
+	{
+		//m_vel.y = 0.0f;
+		m_animType = PlayerAnimation::Idle;
+		m_jumpPower = 0.0f;
+	}
+	// 左上のチェック、もし『ブロックの下辺』に当たっていたら落下させる
+	if (MapHitCheck(m_pos.x - kSizeX, m_pos.y + kSizeY,  Dummy, m_vel.y) == Hit::Buttom)
+	{
+		//m_vel.y = kGravity;
+		m_jumpPower = 0.0f;
+		m_animType = PlayerAnimation::WalkJump;
+	}
+	//右上のチェック、もし『ブロックの下辺』に当たっていたら落下させる
+	if (MapHitCheck(m_pos.x - kSizeX, m_pos.y + kSizeY, Dummy, m_vel.y) == Hit::Buttom)
+	{
+		//m_vel.y = kGravity;
+		m_jumpPower = 0.0f;
+		m_animType = PlayerAnimation::WalkJump;
+	}
+	m_pos = VAdd(m_pos, VGet(0.0f, m_vel.y, 0.0f));
+
+	//後に左右移動成分だけチェック
+	//左下のチェック
+	MapHitCheck(m_pos.x - kSizeX, m_pos.y, m_vel.x, Dummy);
+	//右下のチェック
+	MapHitCheck(m_pos.x + kSizeX, m_pos.y, m_vel.x,Dummy);
+	//左上のチェック
+	MapHitCheck(m_pos.x - kSizeX, m_pos.y + kSizeY, m_vel.x, Dummy);
+	//右上のチェック
+	MapHitCheck(m_pos.x - kSizeX, m_pos.y + kSizeY, m_vel.x, Dummy);
+
+	m_pos = VAdd(m_pos, VGet(m_vel.x,0.0f, 0.0f));
+
+	////接地判定
+	//if (m_map->GetEventParam(m_pos.x - kSizeX, m_pos.y - 0.1f) == static_cast<int>(EventChipType::hit) || 
+	//	m_map->GetEventParam(m_pos.x - kSizeX, m_pos.y - 0.1f) == static_cast<int>(EventChipType::hit))
+	//{
+	//	//足場があったら接地中にする
+	//	m_animType = PlayerAnimation::Idle;
+	//	m_jumpPower = 0.0f;
+	//	m_dir.y = 0.0f;
+	//}
+	//else
+	//{
+	//	m_animType = PlayerAnimation::WalkJump;
+	//}
+
+#else
 	bool isMoveFlag;						// 水平方向に移動したかどうかのフラグ( ０:移動していない  １:移動した )
 	bool isHitFlag;						// ポリゴンに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 	MV1_COLL_RESULT_POLY_DIM HitDim;			// プレイヤーの周囲にあるポリゴンを検出した結果が代入される当たり判定結果構造体
@@ -461,7 +534,7 @@ void Player::Move()
 				if (HitDim.Dim[i].Normal.y < 0.000001f && HitDim.Dim[i].Normal.y > -0.000001f)
 				{
 					// 壁ポリゴンと判断された場合でも、プレイヤーのＹ座標＋1.0fより高いポリゴンのみ当たり判定を行う
-					if (HitDim.Dim[i].Position[0].y > m_pos.y + 1.0f ||
+				if (HitDim.Dim[i].Position[0].y > m_pos.y + 1.0f ||
 						HitDim.Dim[i].Position[1].y > m_pos.y + 1.0f ||
 						HitDim.Dim[i].Position[2].y > m_pos.y + 1.0f)
 					{
@@ -748,5 +821,77 @@ void Player::Move()
 
 	// 新しい座標を保存する
 	m_pos = nowPos;
+#endif
 }
+
+Player::Hit Player::MapHitCheck(float X, float Y, float& MoveX, float& MoveY)
+{
+	//現在の位置と移動量を足す
+	float afterX, afterY;
+	afterX = X + MoveX;
+	afterY = Y + MoveY;
+
+	float blockSize = 0.65f;
+
+	int noX = static_cast<int>(afterX / blockSize);
+	int noY = static_cast<int>(afterY / blockSize);
+
+	VECTOR blockPos;
+	int mapchip = m_map->GetEventParam(afterX, afterY, blockPos.x, blockPos.y);
+
+	//当たっていたら壁から話す処理を行う、ブロックの左右上下の位置を算出
+	float blockLeftX = 0.0f, blockTopY = 0.0f, blockRightX = 0.0f, blockBottomY = 0.0f;
+	blockLeftX = blockPos.x - blockSize;//左　X座標
+	blockRightX = blockPos.x + blockSize;//右　X座標
+	blockTopY = blockPos.y + blockSize;//上　Y座標
+	blockBottomY = blockPos.y - blockSize;//下　Y座標
+
+	//blockLeftX = static_cast<float>(noX * blockSize);//左　X座標
+	//blockRightX = static_cast<float>((noX + 1) * blockSize);//右　X座標
+	//blockTopY = static_cast<float>((noY + 1) * blockSize);//上　Y座標
+	//blockBottomY = static_cast<float>((noY) * blockSize);//下　Y座標
+
+
+	//当たり判定のあるブロックに当たっているか
+	if (mapchip == static_cast<int>(EventChipType::hit))
+	{
+		//ブロックの上に当たっていた場合
+		if (MoveY < 0.0f)
+		{
+			MoveY = blockTopY - Y;
+			m_animType = PlayerAnimation::Idle;
+			//上辺に当たったと返す
+			return Hit::Up;
+		}
+		//ブロックの下に当たっていた場合
+		if (MoveY > 0.0f)
+		{
+			MoveY = blockBottomY - Y;
+			m_animType = PlayerAnimation::Idle;
+			//下辺に当たったと返す
+			return Hit::Buttom;
+		}
+		//ブロックの左に当たっていた場合
+		if (MoveX > 0.0f)
+		{
+			MoveX = blockLeftX - X;
+			//左辺に当たったと返す
+			return Hit::Left;
+		}
+		//ブロックの右に当たっていた場合
+		if (MoveX < 0.0f)
+		{
+			MoveX = blockRightX - X;
+			//右辺に当たったと返す
+			return Hit::Right;
+		}
+		//ここに来たら適当な値を返す
+		//どこかに当たってはいるので床に当たったと返す
+		return Hit::Buttom;
+	}
+
+	//どこにも当たらなかったと返す
+	return Hit::No;
+}
+
 

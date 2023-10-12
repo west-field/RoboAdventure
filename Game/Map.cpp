@@ -193,13 +193,49 @@ void Map::Draw()
 		piece.model->Draw();
 	}
 #ifdef _DEBUG
+	VECTOR m_first, m_second;
+	//キューブのラインを引く　4
 
-	////m_line
-	//for (auto& line : m_line)
-	//{
-	//	DrawLine3D(line.lineFarst, line.lineSecond, 0xff0000);
-	//}
-
+	for (auto& pos : m_pos)
+	{
+		//左上から右上
+		m_first = VAdd(pos, VGet(-kDrawScale, kDrawScale, -1));
+		m_second = VAdd(pos, VGet(kDrawScale, kDrawScale, -1));
+		DrawLine3D(m_first, m_second, 0x000000);
+		//左上から左下
+		m_first = VAdd(pos, VGet(-kDrawScale, kDrawScale, -1));
+		m_second = VAdd(pos, VGet(-kDrawScale, -kDrawScale, -1));
+		DrawLine3D(m_first, m_second, 0x000000);
+		//右上から右下
+		m_first = VAdd(pos, VGet(kDrawScale, kDrawScale, -1));
+		m_second = VAdd(pos, VGet(kDrawScale, -kDrawScale, -1));
+		DrawLine3D(m_first, m_second, 0x000000);
+		//左下から右下
+		m_first = VAdd(pos, VGet(-kDrawScale, -kDrawScale, -1));
+		m_second = VAdd(pos, VGet(kDrawScale, -kDrawScale, -1));
+		DrawLine3D(m_first, m_second, 0x000000);
+	}
+	for (auto& piece : m_piece)
+	{
+		if (!piece.model->IsExist())	continue;
+		if (piece.eventType != EventChipType::hit)	continue;
+		//左上から右上
+		m_first = VAdd(piece.model->GetPos(), VGet(-kDrawScale, kDrawScale, -1));
+		m_second = VAdd(piece.model->GetPos(), VGet(kDrawScale, kDrawScale, -1));
+		DrawLine3D(m_first, m_second, 0xff0000);
+		//左上から左下
+		m_first = VAdd(piece.model->GetPos(), VGet(-kDrawScale, kDrawScale, -1));
+		m_second = VAdd(piece.model->GetPos(), VGet(-kDrawScale, -kDrawScale, -1));
+		DrawLine3D(m_first, m_second, 0xff0000);
+		//右上から右下
+		m_first = VAdd(piece.model->GetPos(), VGet(kDrawScale, kDrawScale, -1));
+		m_second = VAdd(piece.model->GetPos(), VGet(kDrawScale, -kDrawScale, -1));
+		DrawLine3D(m_first, m_second, 0xff0000);
+		//左下から右下
+		m_first = VAdd(piece.model->GetPos(), VGet(-kDrawScale, -kDrawScale, -1));
+		m_second = VAdd(piece.model->GetPos(), VGet(kDrawScale, -kDrawScale, -1));
+		DrawLine3D(m_first, m_second, 0xff0000);
+	}
 	int i = 0;
 	for (auto& piece : m_piece)
 	{
@@ -284,7 +320,7 @@ const int Map::GetChipId(LayerType layerId, int chipX, int chipY)
 }
 
 //現在の位置にあるイベントチップを取得する
-int Map::GetEventParam(float x, float y)
+int Map::GetEventParam(float x, float y, float& posx, float& posy)
 {
 	//位置からその場所のイベントチップを取得する
 	int X = 0,Y = 0;
@@ -295,6 +331,9 @@ int Map::GetEventParam(float x, float y)
 		{
 			if (m_pos[i].x - kDrawScale < x && m_pos[i].x + kDrawScale > x)
 			{
+				posx = m_pos[i].x;
+				posy = m_pos[i].y;
+
 				X = i / m_mapHeight;
 				Y = i % m_mapHeight;
 				break;
@@ -413,7 +452,7 @@ void Map::LoadModel(float add)
 	{
 		for (int y = 0; y < m_mapHeight; y++)
 		{
-			m_pos.push_back(VGet((kDrawScale * 2) * x, 7.5f - (kDrawScale * 2) * y, 0.0f));//全ての位置を取得する
+			m_pos.push_back(VGet((kDrawScale * 2) * x, kStartPos - (kDrawScale * 2) * y, 0.0f));//全ての位置を取得する
 			
 			index = y + x * m_mapHeight;//インデックス
 
@@ -423,7 +462,7 @@ void Map::LoadModel(float add)
 
 			eventChip = m_mapData[static_cast<int>(LayerType::Event)][index];
 			//イベントチップが壁、ブロックの時当たり判定をつける
-			if (eventChip == static_cast<int>(EventChipType::plan) || eventChip == static_cast<int>(EventChipType::block))
+			if (eventChip == static_cast<int>(EventChipType::hit))
 			{
 				isCol = true;
 			}

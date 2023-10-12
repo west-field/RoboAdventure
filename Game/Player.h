@@ -125,6 +125,18 @@ private:
 	/// </summary>
 	void Move();
 
+	enum class Hit
+	{
+		No,
+
+		Left,
+		Right,
+		Up,
+		Buttom,
+
+	};
+	Hit MapHitCheck(float X, float Y, float& MoveX, float& MoveY);
+
 	VECTOR m_pos;//•\Ž¦ˆÊ’u
 	VECTOR m_vel;//ˆÚ“®—Ê
 	VECTOR m_dir;//ˆÚ“®•ûŒü
