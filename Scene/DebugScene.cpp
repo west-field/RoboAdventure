@@ -100,7 +100,7 @@ void DebugScene::FadeOutUpdat(const InputState& input)
 				name = L"Data/Img/Map2.fmf";
 				break;
 			case 2:
-				name = L"Data/Img/Map1.fmf";
+				name = L"Data/Img/Map3.fmf";
 				break;
 			default:
 				break;

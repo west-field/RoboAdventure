@@ -29,7 +29,7 @@ namespace
 
 	const wchar_t* const kFirstFileName = L"Data/Img/Map1.fmf";//1ステージ目で使う3Dマップ名
 	const wchar_t* const kSecondFileName = L"Data/Img/Map2.fmf";//2ステージ目で使う3Dマップ名
-	const wchar_t* const kThirdFileName = L"Data/Img/Map1.fmf";//3ステージ目で使う3Dマップ名
+	const wchar_t* const kThirdFileName = L"Data/Img/Map3.fmf";//3ステージ目で使う3Dマップ名
 
 	constexpr float kMaxCameraPos = 3.0f;//カメラ移動　最大値
 	constexpr float kMinCameraPos = -9.0f;//カメラ移動　最小値
@@ -88,11 +88,6 @@ TitleScene::TitleScene(SceneManager& manager, bool start) :
 		m_selectStage[i].isSelect = header[i].select;//選択できるかどうかをコピー
 		m_selectStage[i].highScore = header[i].highScore;//ハイスコア
 
-		if (i == 2)
-		{
-			m_selectStage[i].isSelect = false;
-		}
-
 		//選択できるとき
 		if (m_selectStage[i].isSelect)
 		{
@@ -121,11 +116,6 @@ TitleScene::TitleScene(SceneManager& manager, bool start) :
 		m_selectStage[i].isSelect = header[i].select;//選択できるかどうかをコピー
 		m_selectStage[i].highScore = header[i].highScore;//ハイスコア
 
-		if (i == 2)
-		{
-			m_selectStage[i].isSelect = false;
-		}
-
 		//選択できるとき
 		if (m_selectStage[i].isSelect)
 		{
@@ -147,7 +137,7 @@ TitleScene::TitleScene(SceneManager& manager, bool start) :
 	//ステージ選択をするときのステージ画像
 	m_selectStage[StageSelect::First].handle = my::MyLoadGraph(L"Data/Img/stage1.jpg");//1ステージ目
 	m_selectStage[StageSelect::Second].handle = my::MyLoadGraph(L"Data/Img/stage2.jpg");//２ステージ目
-	m_selectStage[StageSelect::Third].handle = my::MyLoadGraph(L"Data/Img/comingSoon.jpg");//３ステージ目
+	m_selectStage[StageSelect::Third].handle = my::MyLoadGraph(L"Data/Img/stage3.jpg");//３ステージ目
 
 	//ステージ画像を表示する位置
 	int x = Game::kScreenWidth / (StageSelect::stageNum + 1);
