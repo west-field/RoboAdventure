@@ -102,7 +102,6 @@ void EnemyStraightFly::Move()
 	MV1_COLL_RESULT_POLY_DIM HitDim;//周囲にあるポリゴンを検出スタ結果が代入される当たり判定結果構造体
 	int wallCollisionNum;//壁ポリゴンと判断されたポリゴンの数
 	MV1_COLL_RESULT_POLY* wallCol[kMaxHitColl];	// 壁ポリゴンと判断されたポリゴンの構造体のアドレスを保存しておくためのポインタ配列
-	HITRESULT_LINE LineRes;				// 線分とポリゴンとの当たり判定の結果を代入する構造体
 	VECTOR oldPos;						// 移動前の座標	
 	VECTOR nowPos;						// 移動後の座標
 

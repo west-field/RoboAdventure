@@ -27,8 +27,8 @@ namespace
 	constexpr int kFontGraphSizeX = 48;// 32;
 	constexpr int kFontGraphSizeY = 74;// 15;
 
-	constexpr int kScoreDrawPosX = Game::kScreenWidth / 1.7f;
-	constexpr int kScoreDrawPosY = Game::kScreenHeight / 2.0f;
+	constexpr int kScoreDrawPosX = static_cast<int>(Game::kScreenWidth / 1.7f);
+	constexpr int kScoreDrawPosY = static_cast<int>(Game::kScreenHeight / 2.0f);
 }
 
 GameoverScene::GameoverScene(SceneManager& manager, const int selectStage, const int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model, bool getCoin1, bool getCoin2, bool getCoin3) :
@@ -194,7 +194,7 @@ void GameoverScene::PointDraw(int leftX, int y, int dispNum, float size, int dig
 		digitNum = digit;
 	}
 	// ˆê”Ô‰º‚ÌŒ…‚©‚ç•\Ž¦
-	int posX = leftX - kFontGraphSizeX * size;
+	int posX = static_cast<int>(leftX - kFontGraphSizeX * size);
 	int posY = y;
 	for (int i = 0; i < digitNum; i++)
 	{
@@ -222,6 +222,6 @@ void GameoverScene::PointDraw(int leftX, int y, int dispNum, float size, int dig
 			m_numGraphHandle, true);
 
 		temp /= 10;
-		posX -= kFontGraphSizeX * size;
+		posX -= static_cast<int>(kFontGraphSizeX * size);
 	}
 }

@@ -39,8 +39,8 @@ namespace
 	constexpr int kFontGraphSizeX = 48;// 32;
 	constexpr int kFontGraphSizeY = 74;// 15;
 
-	constexpr int kScoreDrawPosX = Game::kScreenWidth / 1.7f;
-	constexpr int kScoreDrawPosY = Game::kScreenHeight / 2.0f;
+	constexpr int kScoreDrawPosX = static_cast<int>(Game::kScreenWidth / 1.7f);
+	constexpr int kScoreDrawPosY = static_cast<int>(Game::kScreenHeight / 2.0f);
 }
 
 GameclearScene::GameclearScene(SceneManager& manager,int selectStage, int score, std::shared_ptr<Camera> camera, std::shared_ptr<Model> model, bool getCoin1, bool getCoin2, bool getCoin3) :
@@ -238,7 +238,7 @@ void GameclearScene::PointDraw(int leftX, int y, int dispNum, float size, int di
 		digitNum = digit;
 	}
 	// ˆê”Ô‰º‚ÌŒ…‚©‚ç•\Ž¦
-	int posX = leftX - kFontGraphSizeX * size;
+	int posX = static_cast<int>(leftX - kFontGraphSizeX * size);
 	int posY = y;
 	for (int i = 0; i < digitNum; i++)
 	{
@@ -266,6 +266,6 @@ void GameclearScene::PointDraw(int leftX, int y, int dispNum, float size, int di
 			m_numGraphHandle,true);
 
 		temp /= 10;
-		posX -= kFontGraphSizeX * size;
+		posX -= static_cast<int>(kFontGraphSizeX * size);
 	}
 }
