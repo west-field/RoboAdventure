@@ -179,8 +179,9 @@ void GameplayingScene::NormalUpdat(const InputState& input)
 		m_crea = 0;
 		return;
 	}
-	//プレイヤーがカメラの範囲外にいるとき または プレイヤーのHPが0の時 ゲームオーバー
-	if (/*!m_player->OnCamera()*/m_map->GetEventParam(m_player->GetPos().x, m_player->GetPos().y, x, y) == static_cast<int>(EventChipType::deth) || m_player->GetHp() == 0)
+	//プレイヤーが死亡判定の場所にいるとき　または　プレイヤーの位置が-3.1f以下の時 または プレイヤーのHPが0の時 ゲームオーバー
+	if (/*!m_player->OnCamera()*/m_map->GetEventParam(m_player->GetPos().x, m_player->GetPos().y, x, y) == static_cast<int>(EventChipType::deth) ||
+		m_player->GetPos().y <= -3.1f || m_player->GetHp() == 0)
 	{
 		m_player->SwitchAnimation(PlayerAnimation::Death, false, true, 4);
 		m_updateFunc = &GameplayingScene::MoveCameraCloser;
