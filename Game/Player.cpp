@@ -858,7 +858,7 @@ Player::Hit Player::MapHitCheck(float X, float Y, float& MoveX, float& MoveY)
 	//int mapChip = m_map->GetMapChipParam(afterX, afterY);
 	int eventChip = m_map->GetEventParam(afterX, afterY, blockPos.x, blockPos.y);
 
-	//当たっていたら壁から話す処理を行う、ブロックの左右上下の位置を算出
+	//当たっていたら壁から離す処理を行う、ブロックの左右上下の位置を算出
 	float blockLeftX = 0.0f, blockTopY = 0.0f, blockRightX = 0.0f, blockBottomY = 0.0f;
 	blockLeftX = blockPos.x - blockSize;//左　X座標
 	blockRightX = blockPos.x + blockSize;//右　X座標
