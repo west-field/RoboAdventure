@@ -71,6 +71,7 @@ Map::~Map()
 {
 	m_piece.clear();
 	m_pos.clear();
+	m_bgModel.clear();
 
 	for (auto& bg : m_bg)
 	{
@@ -325,6 +326,12 @@ int Map::GetEventParam(float x, float y, float& posx, float& posy)
 	//位置からその場所のイベントチップを取得する
 	int X = 0,Y = 0;
 
+	//int mapChip = GetMapChipParam(x, y);
+	//if (mapChip == MapChipType::bush || mapChip == MapChipType::woodenBox || mapChip == MapChipType::rock1 || mapChip == MapChipType::rock2 || mapChip == MapChipType::tree || mapChip == MapChipType::goalFlag)
+	//{
+	//	y -= 0.65f;
+	//}
+
 	for (int i = 0; i < m_mapWidth * m_mapHeight; i++)
 	{
 		if (m_pos[i].y - kDrawScale < y && m_pos[i].y + kDrawScale > y)
@@ -336,12 +343,33 @@ int Map::GetEventParam(float x, float y, float& posx, float& posy)
 
 				X = i / m_mapHeight;
 				Y = i % m_mapHeight;
-				break;
+				return m_mapData[static_cast<int>(LayerType::Event)][i];
 			}
 		}
 	}
 
 	return GetChipId(LayerType::Event, X, Y);
+}
+
+int Map::GetMapChipParam(float x, float y)
+{
+	//位置からその場所のイベントチップを取得する
+	int X = 0, Y = 0;
+
+	for (int i = 0; i < m_mapWidth * m_mapHeight; i++)
+	{
+		if (m_pos[i].y - kDrawScale < y && m_pos[i].y + kDrawScale > y)
+		{
+			if (m_pos[i].x - kDrawScale < x && m_pos[i].x + kDrawScale > x)
+			{
+				X = i / m_mapHeight;
+				Y = i % m_mapHeight;
+				break;
+			}
+		}
+	}
+
+	return GetChipId(LayerType::Map, X, Y);
 }
 
 int Map::GetEnemyParam(int x, int y)

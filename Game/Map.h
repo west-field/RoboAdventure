@@ -140,6 +140,8 @@ public :
 	/// <returns></returns>
 	int GetEventParam(float x, float y, float& posx, float& posy);
 
+	int GetMapChipParam(float x, float y);
+
 	/// <summary>
 	/// 現在の位置にあるエネミーチップを取得する
 	/// </summary>

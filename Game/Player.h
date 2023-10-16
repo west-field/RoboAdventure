@@ -154,6 +154,10 @@ private:
 	int m_flashing;//ダメージを受けたとき点滅させる
 
 	std::shared_ptr<Hp> m_hp;//HP
+
+#if _DEBUG
+	VECTOR blockPos;
+#endif
 };
 
 
