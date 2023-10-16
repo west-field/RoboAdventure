@@ -476,13 +476,13 @@ void Player::Move()
 
 	//後に左右移動成分だけチェック
 	//左下のチェック
-	MapHitCheck(m_pos.x - kSizeX, m_pos.y, m_vel.x, Dummy);
+	MapHitCheck(m_pos.x - kSizeX, m_pos.y - 0.1f, m_vel.x, Dummy);
 	//右下のチェック
-	MapHitCheck(m_pos.x + kSizeX, m_pos.y, m_vel.x,Dummy);
+	MapHitCheck(m_pos.x + kSizeX, m_pos.y - 0.1f, m_vel.x,Dummy);
 	//左上のチェック
 	MapHitCheck(m_pos.x - kSizeX, m_pos.y + kSizeY, m_vel.x, Dummy);
 	//右上のチェック
-	MapHitCheck(m_pos.x - kSizeX, m_pos.y + kSizeY, m_vel.x, Dummy);
+	MapHitCheck(m_pos.x + kSizeX, m_pos.y + kSizeY, m_vel.x, Dummy);
 
 	m_pos = VAdd(m_pos, VGet(m_vel.x,0.0f, 0.0f));
 

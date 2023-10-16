@@ -72,7 +72,7 @@ TitleScene::TitleScene(SceneManager& manager, bool start) :
 	m_flashingTitleTextTime = 5;//テキストを点滅させる時間
 
 	//タイトルで使用するマップ
-	m_map = std::make_shared<Map>(kFileName, 0.0f, 0);
+	m_map = std::make_shared<Map>(kFileName, 0.0f, -1);
 
 	//ファイル
 	m_file = std::make_shared<FileInformation>();

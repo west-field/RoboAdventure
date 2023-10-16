@@ -28,6 +28,12 @@ Map::Map(const wchar_t* const fileName, float bgAdd, int selectStage) :m_mapHeig
 	//ファイルをロードする
 	LoadModel(bgAdd);//モデルのロード
 
+	isDelete = true;
+	if (selectStage == -1)
+	{
+		isDelete = false;
+	}
+
 	//背景
 	switch (selectStage)
 	{
@@ -110,7 +116,10 @@ void Map::Update()
 			if (piece.coll.draw == 1)
 			{
 				piece.coll.draw = 0;
-				//piece.model->DeleteModel();//モデルを消す
+				if (isDelete)
+				{
+					piece.model->DeleteModel();//モデルを消す
+				}
 			}
 		}
 		else
@@ -195,27 +204,27 @@ void Map::Draw()
 	}
 #ifdef _DEBUG
 	VECTOR m_first, m_second;
-	//キューブのラインを引く　4
-
-	for (auto& pos : m_pos)
-	{
-		//左上から右上
-		m_first = VAdd(pos, VGet(-kDrawScale, kDrawScale, -1));
-		m_second = VAdd(pos, VGet(kDrawScale, kDrawScale, -1));
-		DrawLine3D(m_first, m_second, 0x000000);
-		//左上から左下
-		m_first = VAdd(pos, VGet(-kDrawScale, kDrawScale, -1));
-		m_second = VAdd(pos, VGet(-kDrawScale, -kDrawScale, -1));
-		DrawLine3D(m_first, m_second, 0x000000);
-		//右上から右下
-		m_first = VAdd(pos, VGet(kDrawScale, kDrawScale, -1));
-		m_second = VAdd(pos, VGet(kDrawScale, -kDrawScale, -1));
-		DrawLine3D(m_first, m_second, 0x000000);
-		//左下から右下
-		m_first = VAdd(pos, VGet(-kDrawScale, -kDrawScale, -1));
-		m_second = VAdd(pos, VGet(kDrawScale, -kDrawScale, -1));
-		DrawLine3D(m_first, m_second, 0x000000);
-	}
+	//キューブのラインを引く
+	//for (auto& pos : m_pos)
+	//{
+	//	//左上から右上
+	//	m_first = VAdd(pos, VGet(-kDrawScale, kDrawScale, -1));
+	//	m_second = VAdd(pos, VGet(kDrawScale, kDrawScale, -1));
+	//	DrawLine3D(m_first, m_second, 0x000000);
+	//	//左上から左下
+	//	m_first = VAdd(pos, VGet(-kDrawScale, kDrawScale, -1));
+	//	m_second = VAdd(pos, VGet(-kDrawScale, -kDrawScale, -1));
+	//	DrawLine3D(m_first, m_second, 0x000000);
+	//	//右上から右下
+	//	m_first = VAdd(pos, VGet(kDrawScale, kDrawScale, -1));
+	//	m_second = VAdd(pos, VGet(kDrawScale, -kDrawScale, -1));
+	//	DrawLine3D(m_first, m_second, 0x000000);
+	//	//左下から右下
+	//	m_first = VAdd(pos, VGet(-kDrawScale, -kDrawScale, -1));
+	//	m_second = VAdd(pos, VGet(kDrawScale, -kDrawScale, -1));
+	//	DrawLine3D(m_first, m_second, 0x000000);
+	//	//DrawSphere3D(pos, kDrawScale, 10, 0x000000, 0x000000, false);
+	//}
 	for (auto& piece : m_piece)
 	{
 		if (!piece.model->IsExist())	continue;

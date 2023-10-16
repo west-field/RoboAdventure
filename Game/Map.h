@@ -203,5 +203,7 @@ private:
 	Bg m_bg[4];//各画像を2枚
 	float m_bgHandleW;//背景画像のサイズW
 	float m_bgHandleH;//背景画像のサイズH
+
+	bool isDelete;
 };
 
