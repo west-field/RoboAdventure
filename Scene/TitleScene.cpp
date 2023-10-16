@@ -446,7 +446,6 @@ void TitleScene::StageSelectDraw()
 
 	//テキストを表示
 	SetFontSize(kFontSize);
-	DrawString(10, 0, L"ESC:戻る", 0xffffff);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_flashingTitleText);
 	DrawString(((Game::kScreenWidth / 2) - (kFontSize * 9 / 2)), Game::kScreenHeight - kTitleFontSize * 2, kTitleNext, 0xffffff);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
